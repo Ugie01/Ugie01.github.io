@@ -7,7 +7,7 @@ const root = path.resolve(__dirname, '..');
 const output = path.join(root, '.local-preview');
 fs.mkdirSync(output, { recursive: true });
 const base = process.env.PORTFOLIO_URL || 'http://127.0.0.1:4173';
-const widths = [320, 375, 390, 430, 768, 1024, 1440];
+const widths = [280, 320, 360, 375, 390, 412, 430, 768, 1024, 1440, 1920];
 const pages = ['index.html', ...['fms', 'gosung', 'aiming', 'tracking', 'vip', 'plc'].map(id => `projects/${id}.html`)];
 (async () => {
   const browser = await chromium.launch({ channel: process.env.BROWSER_CHANNEL || 'msedge', headless: true });
@@ -34,7 +34,7 @@ const pages = ['index.html', ...['fms', 'gosung', 'aiming', 'tracking', 'vip', '
           }).map(el => `${el.tagName}.${el.className}`);
           const broken = [...document.images].filter(img => !img.complete || !img.naturalWidth).map(img => img.getAttribute('src'));
           // Flow arrows intentionally sit between boxes, outside each list item's width.
-          const clipped = [...document.querySelectorAll('p,h1,h2,h3,button,.tags li,.system-layer')].filter(el => visible(el) && (el.scrollWidth > el.clientWidth + 2 || el.scrollHeight > el.clientHeight + 2)).map(el => `${el.tagName}.${el.className}`);
+          const clipped = [...document.querySelectorAll('p,h1,h2,h3,button,.tags li,.system-layer')].filter(el => visible(el) && (el.scrollWidth > el.clientWidth + 2 || el.scrollHeight > el.clientHeight + 2)).map(el => `${el.tagName}.${el.className}[${el.scrollWidth}x${el.scrollHeight}/${el.clientWidth}x${el.clientHeight}]`);
           const controls = [...document.querySelectorAll('.button,.filters button,.menu-toggle,.nav-links a')].filter(visible);
           const small = controls.filter(el => el.getBoundingClientRect().height < 43).map(el => el.textContent);
           const overlaps = [];
@@ -86,7 +86,7 @@ const pages = ['index.html', ...['fms', 'gosung', 'aiming', 'tracking', 'vip', '
       const refs=await page.locator('a[href],img[src],script[src],link[href]').evaluateAll(els=>els.map(el=>el.getAttribute('href')||el.getAttribute('src')));
       for(const ref of refs) {
         if(/^(https?:|mailto:|data:)/.test(ref)) continue;
-        const [file,hash]=ref.split('#');const target=file?path.resolve(root,path.dirname(url),decodeURIComponent(file)):path.resolve(root,url);
+        const [pathAndQuery,hash]=ref.split('#');const file=pathAndQuery.split('?')[0];const target=file?path.resolve(root,path.dirname(url),decodeURIComponent(file)):path.resolve(root,url);
         assert.ok(fs.existsSync(target),`${url}: missing ${ref}`);
         if(hash && target.endsWith('.html')) assert.ok(fs.readFileSync(target,'utf8').includes(`id="${hash}"`),`${url}: missing fragment ${ref}`);
       }
