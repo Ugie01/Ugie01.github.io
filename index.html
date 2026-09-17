@@ -1,31 +1,965 @@
-[이명욱]
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-Robotics / Embedded Software Engineer
+    <title>이명욱 | Robot SW & Embedded</title>
 
-About Me
-────────────────────
+    <meta
+        name="description"
+        content="STM32 펌웨어, ROS 2, AMR, FMS, 센서 처리와 로봇 시스템 통합을 중심으로 개발하는 이명욱의 포트폴리오입니다."
+    >
 
-Projects
-────────────────────
+    <link rel="stylesheet" href="style.css">
+</head>
 
-01 Logistics FMS
-   ROS2 / Zenoh / FastAPI / React
+<body>
 
-02 Outdoor Delivery Robot
-   ROS2 / STM32 / LiDAR / Camera
+<header class="header">
+    <nav class="navbar">
+        <a href="#home" class="logo">Ugie01</a>
 
-03 Autonomous Racing Robot
-   STM32 / Motor Control
+        <button class="menu-button" id="menuButton">
+            ☰
+        </button>
 
-04 Camera / Embedded Vision
-   STM32H7 / OV2640
+        <div class="nav-links" id="navLinks">
+            <a href="#about">About</a>
+            <a href="#skills">Skills</a>
+            <a href="#projects">Projects</a>
+            <a href="#experiments">Experiments</a>
+            <a href="#awards">Awards</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+</header>
 
-Awards
-────────────────────
 
-Skills
-────────────────────
+<main>
 
-GitHub
-Resume
-Contact
+<!-- ======================================================
+     HERO
+====================================================== -->
+
+<section id="home" class="hero">
+
+    <div class="hero-inner">
+
+        <p class="eyebrow">
+            ROBOT SOFTWARE · EMBEDDED · SYSTEM INTEGRATION
+        </p>
+
+        <h1>
+            안녕하세요.<br>
+            <span>로봇의 실제 동작을 구현하는</span><br>
+            개발자 이명욱입니다.
+        </h1>
+
+        <p class="hero-description">
+            STM32 펌웨어, ROS 2 센서 처리, 모바일 제어 앱을 연결해
+            실제 로봇 시스템을 구현해 왔습니다.
+            현재는 AMR·자율주행 로봇 SW와 로봇 시스템 통합 분야를
+            중심으로 역량을 확장하고 있습니다.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">
+                프로젝트 보기
+            </a>
+
+            <a
+                href="https://github.com/Ugie01"
+                target="_blank"
+                class="btn btn-secondary"
+            >
+                GitHub
+            </a>
+        </div>
+
+        <div class="hero-stack">
+            <span>ROS 2</span>
+            <span>STM32</span>
+            <span>FreeRTOS</span>
+            <span>Android</span>
+            <span>FastAPI</span>
+            <span>Zenoh</span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     ABOUT
+====================================================== -->
+
+<section id="about" class="section">
+
+    <div class="section-heading">
+        <p class="section-index">01</p>
+        <h2>About Me</h2>
+    </div>
+
+    <div class="about-grid">
+
+        <div class="about-text">
+
+            <h3>
+                센서와 모터부터 앱과 관제 시스템까지,
+                연결되는 전체 흐름을 이해하려고 합니다.
+            </h3>
+
+            <p>
+                센서와 모터를 제어하는 코드부터,
+                로봇의 데이터를 확인하고 명령을 보내는 앱까지
+                직접 만들어 왔습니다.
+            </p>
+
+            <p>
+                여러 장치가 연결될 때 발생하는 통신 문제,
+                센서 데이터 오류, 제어 불안정 등을 직접 확인하고
+                수정한 뒤 다시 시험하는 과정을 좋아합니다.
+            </p>
+
+            <p>
+                최근에는 단순 구현에서 끝나지 않고,
+                성능 측정과 개발 과정 기록을 체계화하기 위해
+                Git·GitHub, Jira, Confluence 기반 협업 방식도
+                함께 익히고 있습니다.
+            </p>
+
+        </div>
+
+
+        <div class="about-card">
+
+            <div class="about-item">
+                <span>관심 직무</span>
+                <strong>
+                    AMR · 자율주행 로봇 SW<br>
+                    로봇 시스템 통합
+                </strong>
+            </div>
+
+            <div class="about-item">
+                <span>현재</span>
+                <strong>
+                    대한상공회의소 서울기술교육센터<br>
+                    AI 융합 로봇 SW 개발자 3기
+                </strong>
+            </div>
+
+            <div class="about-item">
+                <span>주요 경험</span>
+                <strong>
+                    Embedded FW · ROS 2 · Sensor<br>
+                    Mobile App · FMS
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="timeline">
+
+        <div class="timeline-item">
+            <span class="timeline-date">2026.04 ~ 현재</span>
+            <div>
+                <strong>대한상공회의소 서울기술교육센터</strong>
+                <p>
+                    AI 융합 로봇 SW 개발자 3기 수강 중 ·
+                    2026.11.09 종료 예정
+                </p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <span class="timeline-date">2026.02</span>
+            <div>
+                <strong>인덕대학교 정보통신공학과</strong>
+                <p>전공심화 졸업 · 4.5 / 4.5</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <span class="timeline-date">2025.02</span>
+            <div>
+                <strong>인덕대학교 컴퓨터전자공학과</strong>
+                <p>졸업 · 4.45 / 4.5</p>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <span class="timeline-date">2022.09 ~ 2024.12</span>
+            <div>
+                <strong>인덕대학교 ICT 학과 동아리</strong>
+                <p>
+                    회장 · 스터디 운영 및 프로젝트 일정 조율
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="license-box">
+        <strong>자격</strong>
+        <span>정보처리기사 · 2025.09</span>
+        <span>자동차운전면허 1종 보통 · 2020.10</span>
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     SKILLS
+====================================================== -->
+
+<section id="skills" class="section section-dark">
+
+    <div class="section-heading">
+        <p class="section-index">02</p>
+        <h2>Tech Stack</h2>
+    </div>
+
+    <div class="skills-grid">
+
+        <article class="skill-card">
+            <h3>Languages</h3>
+
+            <div class="tag-group">
+                <span>C</span>
+                <span>C++</span>
+                <span>Python</span>
+                <span>Java</span>
+                <span>Dart</span>
+            </div>
+        </article>
+
+
+        <article class="skill-card">
+            <h3>Robot & Embedded</h3>
+
+            <div class="tag-group">
+                <span>ROS 2 Humble</span>
+                <span>ROS 2 Jazzy</span>
+                <span>STM32F407</span>
+                <span>STM32H743</span>
+                <span>STM32 HAL</span>
+                <span>FreeRTOS</span>
+                <span>UART</span>
+                <span>I²C</span>
+                <span>DMA</span>
+                <span>Timer / PWM</span>
+            </div>
+        </article>
+
+
+        <article class="skill-card">
+            <h3>Sensor & Control</h3>
+
+            <div class="tag-group">
+                <span>2D LiDAR</span>
+                <span>Camera</span>
+                <span>IMU</span>
+                <span>GPS</span>
+                <span>Ultrasonic</span>
+                <span>DC Motor</span>
+                <span>BLDC</span>
+                <span>Servo</span>
+            </div>
+        </article>
+
+
+        <article class="skill-card">
+            <h3>App & Communication</h3>
+
+            <div class="tag-group">
+                <span>Android</span>
+                <span>Flutter</span>
+                <span>Bluetooth Classic</span>
+                <span>BLE</span>
+                <span>TMAP</span>
+                <span>Firebase</span>
+                <span>FastAPI</span>
+                <span>Zenoh</span>
+            </div>
+        </article>
+
+
+        <article class="skill-card">
+            <h3>Package Experience</h3>
+
+            <div class="tag-group">
+                <span>Nav2</span>
+                <span>SLAM Toolbox</span>
+                <span>AMCL</span>
+                <span>OpenCV</span>
+            </div>
+
+            <p class="skill-note">
+                기존 패키지 사용 및 설정 경험입니다.
+                내부 경로 계획 알고리즘이나 AI 모델 자체를
+                직접 구현한 경험으로 설명하지 않습니다.
+            </p>
+        </article>
+
+
+        <article class="skill-card">
+            <h3>Learning & Collaboration</h3>
+
+            <div class="tag-group">
+                <span>Git</span>
+                <span>GitHub</span>
+                <span>Jira</span>
+                <span>Confluence</span>
+            </div>
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     PROJECTS
+====================================================== -->
+
+<section id="projects" class="section">
+
+    <div class="section-heading">
+        <p class="section-index">03</p>
+        <h2>Featured Projects</h2>
+    </div>
+
+
+    <!-- FMS -->
+
+    <article class="project-card featured">
+
+        <div class="project-top">
+
+            <div>
+                <p class="project-number">PROJECT 01</p>
+                <h3>
+                    물류로봇 · 다중 로봇 관제 FMS
+                </h3>
+            </div>
+
+            <span class="project-status">
+                진행 중
+            </span>
+
+        </div>
+
+
+        <p class="project-meta">
+            2026 ~ 현재 · ROS 2 Jazzy · Nav2 Route Server ·
+            Zenoh · FastAPI
+        </p>
+
+
+        <p class="project-summary">
+            여러 로봇의 상태와 이동 경로를 한곳에서 확인하고,
+            물류 작업을 배차하기 위한 다중 로봇 관제 시스템입니다.
+        </p>
+
+
+        <div class="project-detail-grid">
+
+            <div>
+                <h4>My Role</h4>
+                <p>
+                    FMS 백엔드의 라우터·서비스 구조,
+                    GeoJSON 루트 그래프 처리,
+                    Zenoh 기반 로봇 통신,
+                    프론트엔드 연동 구조를 개발 브랜치에서 작업했습니다.
+                </p>
+            </div>
+
+            <div>
+                <h4>In Progress</h4>
+                <p>
+                    주문 배차, 다중 로봇 교통 관리,
+                    OMX 로봇팔 연계,
+                    VLM 방식 비교를 단계적으로 구현하고 있습니다.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="project-links">
+
+            <a
+                href="https://github.com/E1I6-Logistics/Logistics_FMS"
+                target="_blank"
+            >
+                FMS Repository
+            </a>
+
+            <a
+                href="https://github.com/E1I6-Logistics/Logistics_FMS/tree/ugie-fms"
+                target="_blank"
+            >
+                My Branch
+            </a>
+
+            <a
+                href="https://github.com/E1I6-Logistics/Logistics_AMR"
+                target="_blank"
+            >
+                AMR Repository
+            </a>
+
+        </div>
+
+    </article>
+
+
+    <!-- VIP -->
+
+    <article class="project-card">
+
+        <div class="project-top">
+
+            <div>
+                <p class="project-number">PROJECT 02</p>
+                <h3>VIP Wearable</h3>
+            </div>
+
+            <span class="project-status">
+                2명
+            </span>
+
+        </div>
+
+        <p class="project-meta">
+            2026.07 ~ 08 · Android / Java · Bluetooth RFCOMM ·
+            IMU · TMAP
+        </p>
+
+        <p class="project-summary">
+            음성 길안내와 센서·진동 피드백을 연결한
+            시각장애인 보행 보조 시스템입니다.
+        </p>
+
+        <div class="project-detail-grid">
+
+            <div>
+                <h4>My Role</h4>
+                <p>
+                    Android 내비게이션·오디오,
+                    스마트폰과 Raspberry Pi 간 통신,
+                    IMU 파싱,
+                    낙상 감지 상태 머신,
+                    진동 모터 구동을 담당했습니다.
+                </p>
+            </div>
+
+            <div>
+                <h4>Problem & Result</h4>
+                <p>
+                    BLE 연결 문제로 인해 Bluetooth Classic으로 전환했습니다.
+                    위치 추정과 연결 자동 복구는 해결하지 못한 과제로 남았습니다.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="project-links">
+            <a
+                href="https://github.com/Ugie01/2026ESWContest_free_VIPWEARABLE"
+                target="_blank"
+            >
+                Repository
+            </a>
+
+            <a
+                href="https://youtu.be/4h71w1IgXRw"
+                target="_blank"
+            >
+                Demo Video
+            </a>
+        </div>
+
+    </article>
+
+
+    <!-- AIMing -->
+
+    <article class="project-card">
+
+        <div class="project-top">
+
+            <div>
+                <p class="project-number">PROJECT 03</p>
+                <h3>AIMing Project</h3>
+            </div>
+
+            <span class="project-status">
+                4명
+            </span>
+
+        </div>
+
+        <p class="project-meta">
+            2026.07 ~ 08 · STM32H7 · FreeRTOS · DMA · OV2640
+        </p>
+
+        <p class="project-summary">
+            카메라 입력, 온디바이스 추론,
+            장치 제어를 STM32H7에서 연결한 프로젝트입니다.
+        </p>
+
+        <div class="project-detail-grid">
+
+            <div>
+                <h4>My Role</h4>
+                <p>
+                    보드 선정,
+                    카메라·디스플레이·서보 연동,
+                    FreeRTOS Task 구성,
+                    DMA 기반 영상 처리 흐름을 담당했습니다.
+                </p>
+            </div>
+
+            <div>
+                <h4>Engineering Decision</h4>
+                <p>
+                    약 14~15 FPS 설정에서 영상 노이즈가 발생해,
+                    최종 시연에는 안정성이 확보된 약 7 FPS 설정을 사용했습니다.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="project-links">
+            <a
+                href="https://github.com/Ugie01/AIMing_Project"
+                target="_blank"
+            >
+                Repository
+            </a>
+
+            <a
+                href="https://www.youtube.com/watch?v=Eg0nYeOGCXA"
+                target="_blank"
+            >
+                Demo Video
+            </a>
+        </div>
+
+    </article>
+
+
+    <!-- Patrol -->
+
+    <article class="project-card">
+
+        <div class="project-top">
+
+            <div>
+                <p class="project-number">PROJECT 04</p>
+                <h3>온디바이스 AI 트래킹 순찰 로봇</h3>
+            </div>
+
+            <span class="project-status">
+                7명
+            </span>
+
+        </div>
+
+        <p class="project-meta">
+            2026.05 · Raspberry Pi 5 · STM32F407 ·
+            Flutter · Bluetooth Classic
+        </p>
+
+        <p class="project-summary">
+            영상 분석 결과에 따라 대상을 추적하고,
+            앱에서 로봇 상태 확인과 수동 제어가 가능한
+            순찰 로봇 시스템입니다.
+        </p>
+
+        <div class="project-detail-grid">
+
+            <div>
+                <h4>My Role</h4>
+                <p>
+                    전체 시스템 연결 구조,
+                    STM32 펌웨어와 통신 인터페이스,
+                    Bluetooth 상태 수신,
+                    조이스틱 조종,
+                    PID 게인 설정 Flutter UI를 담당했습니다.
+                </p>
+            </div>
+
+            <div>
+                <h4>Result & Limitation</h4>
+                <p>
+                    낙상·위험 행동 구분 시연을 구현했지만,
+                    손 흔들기 등의 행동에서도 오탐이 발생했습니다.
+                    성능은 동일 조건의 정량 지표로 검증하지 못했습니다.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="project-links">
+            <a
+                href="https://github.com/Ugie01/Tracking_Patrol_Robot"
+                target="_blank"
+            >
+                Repository
+            </a>
+
+            <a
+                href="https://www.youtube.com/watch?v=0Xhue5Aivyg"
+                target="_blank"
+            >
+                Demo Video
+            </a>
+        </div>
+
+    </article>
+
+
+    <!-- GoSung -->
+
+    <article class="project-card">
+
+        <div class="project-top">
+
+            <div>
+                <p class="project-number">PROJECT 05</p>
+                <h3>실외 자율주행 배달로봇 GoSung</h3>
+            </div>
+
+            <span class="project-status">
+                6명
+            </span>
+
+        </div>
+
+        <p class="project-meta">
+            2024.04 ~ 12 · ROS 2 Humble · STM32F407 ·
+            FreeRTOS · 2D LiDAR · Camera
+        </p>
+
+        <p class="project-summary">
+            STM32 센서·구동부,
+            ROS 2 제어부,
+            Android 앱을 연결한
+            실외 배달로봇 프로젝트입니다.
+        </p>
+
+        <div class="project-detail-grid">
+
+            <div>
+                <h4>My Role</h4>
+                <p>
+                    IMU·GPS 파싱,
+                    BLDC 모터 제어,
+                    초음파 비상정지,
+                    객체 영역 기반 LiDAR 데이터 필터링,
+                    앱 위치 표시와 수동 제어 기능을 담당했습니다.
+                </p>
+            </div>
+
+            <div>
+                <h4>Result & Limitation</h4>
+                <p>
+                    경사로 정지 보정은 구현했지만,
+                    실외 급가속 문제는 해결하지 못했습니다.
+                    당시 센서 시간 동기화는 적용하지 않았습니다.
+                </p>
+            </div>
+
+        </div>
+
+        <div class="project-links">
+            <a
+                href="https://github.com/Ugie01/GoSung"
+                target="_blank"
+            >
+                Repository
+            </a>
+
+            <a
+                href="https://www.youtube.com/watch?v=ovQ-Pq1NfFU"
+                target="_blank"
+            >
+                Demo Video
+            </a>
+        </div>
+
+    </article>
+
+</section>
+
+
+<!-- ======================================================
+     EXPERIMENTS
+====================================================== -->
+
+<section id="experiments" class="section section-dark">
+
+    <div class="section-heading">
+        <p class="section-index">04</p>
+        <h2>Technical Experiments</h2>
+    </div>
+
+    <p class="section-description">
+        팀 프로젝트의 성과와 분리해,
+        개인적으로 직접 구현하거나 다시 실험한 내용을 정리했습니다.
+    </p>
+
+
+    <div class="experiment-grid">
+
+        <article class="experiment-card">
+
+            <h3>ROS2_Controller</h3>
+
+            <p>
+                Android 앱에서 로봇의 영상·LiDAR 데이터를 확인하고,
+                이동 및 설정 명령을 전달하는
+                ROS 2 원격 제어 인터페이스입니다.
+            </p>
+
+            <p class="experiment-note">
+                SLAM과 Nav2 자체 알고리즘 개발이 아니라,
+                로봇에 구성된 기능을 앱과 연결하는 구조에 초점을 뒀습니다.
+            </p>
+
+            <a
+                href="https://github.com/Ugie01/ROS2_Controller"
+                target="_blank"
+            >
+                View Repository →
+            </a>
+
+        </article>
+
+
+        <article class="experiment-card">
+
+            <h3>SensorFusion</h3>
+
+            <p>
+                Camera와 LiDAR 토픽을 시간 동기화하고,
+                카메라 인식 객체와 LiDAR 거리 정보를
+                연결하는 센서 융합 실험입니다.
+            </p>
+
+            <p class="experiment-note">
+                GoSung 프로젝트 이후,
+                당시 적용하지 못했던 시간 동기화 문제를
+                별도 개인 실험으로 다시 구현했습니다.
+            </p>
+
+            <a
+                href="https://github.com/Ugie01/SensorFusion"
+                target="_blank"
+            >
+                View Repository →
+            </a>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     PREVIOUS PROJECTS
+====================================================== -->
+
+<section class="section">
+
+    <div class="section-heading">
+        <p class="section-index">05</p>
+        <h2>Previous Projects</h2>
+    </div>
+
+
+    <div class="previous-projects">
+
+        <article class="previous-card">
+
+            <span>2023</span>
+
+            <h3>실외 배달로봇 v1</h3>
+
+            <p>
+                STM32F407 기반 모터 구동,
+                초음파 비상정지,
+                Bluetooth 수동 제어 로직 구현.
+            </p>
+
+            <p class="limitation">
+                목표였던 실외 자율주행은 완성하지 못했고,
+                센서와 ROS 2 구성을 v2에서 보완했습니다.
+            </p>
+
+        </article>
+
+
+        <article class="previous-card">
+
+            <span>2024</span>
+
+            <h3>
+                시각장애인을 위한 마트 길찾기 로봇
+            </h3>
+
+            <p>
+                UWB 삼변측량,
+                robot_localization EKF 적용 시도,
+                STM32·센서 처리 경험 공유.
+            </p>
+
+            <p class="limitation">
+                최종 위치 추정 방식은 다른 팀원이 구현했습니다.
+            </p>
+
+        </article>
+
+
+        <article class="previous-card">
+
+            <span>2024</span>
+
+            <h3>
+                제22회 임베디드 SW 경진대회
+            </h3>
+
+            <p>
+                AWS DeepRacer 패키지와 ECU 간
+                소켓 연동을 시도했습니다.
+            </p>
+
+            <p class="limitation">
+                연동 구현은 완성하지 못했고,
+                대회에는 기존 DeepRacer 패키지를 사용했습니다.
+            </p>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     AWARDS
+====================================================== -->
+
+<section id="awards" class="section section-dark">
+
+    <div class="section-heading">
+        <p class="section-index">06</p>
+        <h2>Awards</h2>
+    </div>
+
+    <div class="award-list">
+
+        <article class="award-item">
+
+            <span class="award-year">2024.11</span>
+
+            <div>
+                <h3>
+                    제22회 임베디드 소프트웨어 경진대회
+                </h3>
+
+                <p>
+                    최우수상 · 팀 수상
+                </p>
+            </div>
+
+        </article>
+
+
+        <article class="award-item">
+
+            <span class="award-year">2024.12</span>
+
+            <div>
+                <h3>
+                    한이음 ICT 멘토링
+                </h3>
+
+                <p>
+                    실외 배달로봇 v2 입선 · 팀 수상
+                </p>
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     CONTACT
+====================================================== -->
+
+<section id="contact" class="contact-section">
+
+    <p class="eyebrow">
+        CONTACT
+    </p>
+
+    <h2>
+        로봇이 실제 환경에서 동작하기까지의<br>
+        문제를 해결하는 개발자가 되고 싶습니다.
+    </h2>
+
+    <p>
+        프로젝트 코드와 추가 실험 내용은
+        GitHub에서 확인할 수 있습니다.
+    </p>
+
+
+    <div class="contact-actions">
+
+        <a
+            href="https://github.com/Ugie01"
+            target="_blank"
+            class="btn btn-primary"
+        >
+            GitHub Profile
+        </a>
+
+        <a
+            href="https://github.com/Ugie01?tab=repositories"
+            target="_blank"
+            class="btn btn-secondary"
+        >
+            All Repositories
+        </a>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<footer>
+    <p>
+        © 2026 Lee Myeonguk · Robotics & Embedded Portfolio
+    </p>
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
