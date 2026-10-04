@@ -362,8 +362,8 @@ p{color:var(--muted)}
 }
 
 /* 2026 portfolio visual refresh */
-body{background:#fcfaf6}
-.site-header{background:rgba(252,250,246,.96)}
+body{background:#fff}
+.site-header{background:rgba(255,255,255,.96)}
 .hero{grid-template-columns:minmax(0,1fr) minmax(280px,390px);gap:clamp(48px,8vw,110px);padding-block:72px 64px}
 .hero-copy{position:relative}
 .hero-copy:before{content:"";display:block;width:54px;height:5px;background:var(--blue);margin-bottom:34px}
@@ -499,6 +499,8 @@ body{background:#fcfaf6}
 .home-page #skills .eyebrow{color:#aaa}
 .home-page #skills h2{color:#fff}
 .home-page #skills .section-head{border-color:#444}
+.home-page #skills .skills-language{color:#aaa;text-align:right}
+.home-page #skills .skills-language strong{color:#fff;font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase}
 .home-page .skill-grid{grid-template-columns:repeat(4,1fr);background:transparent;border-top:0;border-bottom:1px solid #444;color:#fff}
 .home-page .skill-grid:before{display:none}
 .home-page .skill-group{min-height:270px;padding:28px 24px 30px;border-color:#3d3d3d;background:transparent}
@@ -697,6 +699,7 @@ body{background:#fcfaf6}
  .home-page .section,.home-page #projects,.home-page .about-section{padding-block:54px}
  .home-page .section-head{align-items:start;flex-direction:column;gap:10px;margin-bottom:22px}
  .home-page .section-head>p{font-size:14px}
+ .home-page #skills .skills-language{text-align:left}
  .home-page .hero{padding-block:38px 48px}
  .home-page .project-card,.home-page .project-card:nth-child(even){grid-template-columns:1fr}
  .home-page .project-image{min-height:0;height:220px}
@@ -829,3 +832,6 @@ body{background:#fcfaf6}
 .detail-main .subheading{color:var(--ink)}
 .detail-keyline strong{font-weight:700}
 .system-flow li>span:last-child{font-weight:650}
+
+/* Breathing room between the profile and skills section. */
+.home-page #skills{margin-top:24px}

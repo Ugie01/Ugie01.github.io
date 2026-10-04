@@ -49,8 +49,7 @@
         "caption": "전체 관제, 로봇, 로봇팔 구조 이미지 교체 예정 (현재: 경로 그래프)"
       }
     ],
-    "github": "https://github.com/E1I6-Logistics/Logistics_FMS/tree/ugie-customize",
-    "readme": "https://github.com/E1I6-Logistics/Logistics_FMS/blob/ugie-customize/README.md",
+    "github": "https://github.com/E1I6-Logistics/Logistics_FMS",
     "demo": "",
     "demoNote": "현재 개발 중",
     "source": "https://github.com/E1I6-Logistics/Logistics_FMS/blob/ugie-customize/backend/app/ros2/ros_gateway.py",
@@ -110,7 +109,6 @@
       }
     ],
     "github": "https://github.com/Ugie01/GoSung",
-    "readme": "https://github.com/Ugie01/GoSung#readme",
     "demo": "https://www.youtube.com/watch?v=ovQ-Pq1NfFU",
     "source": "https://github.com/Ugie01/GoSung/tree/HEAD/stm32",
     "highlight": "센서와 구동 연동 시험, 목표한 배달 주행은 미달",
@@ -169,7 +167,6 @@
       }
     ],
     "github": "https://github.com/Ugie01/AIMing_Project",
-    "readme": "https://github.com/Ugie01/AIMing_Project#readme",
     "demo": "https://www.youtube.com/watch?v=Eg0nYeOGCXA",
     "source": "https://github.com/Ugie01/AIMing_Project/tree/HEAD/aiming_project/Core/Src/Tasks",
     "highlight": "약 7 FPS 설정에서 보드 추론과 추적 흐름 확인",
@@ -254,7 +251,6 @@
       }
     ],
     "github": "https://github.com/Ugie01/Tracking_Patrol_Robot",
-    "readme": "https://github.com/Ugie01/Tracking_Patrol_Robot#readme",
     "demo": "https://www.youtube.com/watch?v=0Xhue5Aivyg",
     "source": "https://github.com/Ugie01/Tracking_Patrol_Robot/tree/HEAD/ai_vision",
     "highlight": "Pose 상황 판단과 대상 추적과 주행 명령 시연",
@@ -313,7 +309,6 @@
       }
     ],
     "github": "https://github.com/Ugie01/2026ESWContest_free_VIPWEARABLE",
-    "readme": "https://github.com/Ugie01/2026ESWContest_free_VIPWEARABLE#readme",
     "demo": "https://www.youtube.com/watch?v=4h71w1IgXRw",
     "source": "https://github.com/Ugie01/2026ESWContest_free_VIPWEARABLE/tree/HEAD/vip_wearable_rasi/basic",
     "highlight": "방향과 장애물 진동 연동, 전체 경로 안내는 미검증",
@@ -371,7 +366,6 @@
       }
     ],
     "github": "",
-    "readme": "",
     "demo": "",
     "demoNote": "",
     "source": "",

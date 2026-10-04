@@ -1,0 +1,75 @@
+/* Landscape portfolio: one profile sheet and one summary sheet per project. */
+@page{size:A4 landscape;margin:0}
+.print-view{background:#e9e9e9;font-size:14px;line-height:1.65}
+.print-toolbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 24px;background:#111;color:#fff}
+.print-toolbar p{color:#eee;font-size:13px}
+.print-toolbar button{background:#fff;color:#111;border:0;padding:9px 20px;font-weight:700}
+.print-toolbar button:disabled{opacity:.5;cursor:wait}
+.print-help{text-align:center;padding:14px 20px;font-size:13px}
+.pdf-sheet{width:297mm;height:210mm;padding:8mm 11mm 6mm;margin:20px auto;background:#fff;box-shadow:0 3px 20px #0001;display:flex;flex-direction:column}
+.pdf-running-head{height:8mm;flex:none;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid #171717;font-size:10px;letter-spacing:.07em;color:#777}
+.pdf-running-head strong{color:#111}
+.pdf-body{flex:1;min-height:0;padding:16px 0 15px;display:flex;flex-direction:column;gap:18px}
+.pdf-footer{height:6mm;flex:none;display:flex;justify-content:space-between;align-items:end;border-top:1px solid #ddd;font-size:9px;color:#777}
+.pdf-body p{margin:0;color:#555}
+.pdf-body h1,.pdf-body h2{color:#171717;font-weight:750}
+.pdf-body h2{font-size:16px;line-height:1.4;margin:0 0 9px;letter-spacing:-.025em}
+.pdf-body .pdf-kicker{font-size:10px;font-weight:700;letter-spacing:.1em;color:#888;line-height:1.5;margin:0 0 6px}
+.pdf-project-heading{flex:none}
+.pdf-title-row{display:flex;align-items:center;gap:18px}
+.pdf-title-row h1{font-size:35px;line-height:1.2;margin:0;letter-spacing:-.04em}
+.pdf-status{font-size:10px;color:#666;padding:3px 8px;background:#f2f2f2;border:1px solid #ddd;white-space:nowrap}
+.pdf-body .pdf-project-summary{font-size:15px;line-height:1.6;margin:6px 0 10px}
+.pdf-metadata{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.pdf-meta{font-size:11px;line-height:1.5}
+.pdf-meta span{border-left:1px solid #ddd;margin-left:15px;padding-left:15px}
+.pdf-tags{list-style:none;display:flex;gap:6px;flex-wrap:wrap;margin:0;padding:0}
+.pdf-tags li{font-size:10px;background:#f4f4f4;border:1px solid #ddd;padding:3px 8px}
+.pdf-project-layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:30px;align-items:start;flex:none;border-top:1px solid #ddd;padding-top:17px}
+.pdf-visual-column,.pdf-content-column{min-width:0}
+.pdf-project-image{margin:0}
+.pdf-project-image img{display:block;width:400px;height:285px;object-fit:contain;background:#f3f3f3;border:1px solid #e2e2e2;padding:8px;filter:none}
+.pdf-project-image figcaption{font-size:10px;line-height:1.5;color:#888;margin-top:6px}
+.pdf-flow-section{margin-top:17px}
+.pdf-flow-section h2{font-size:13px}
+.pdf-flow{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:0;padding:0}
+.pdf-flow li{display:flex;align-items:center;gap:8px;min-width:0;background:#f5f5f5;border:1px solid #e0e0e0;padding:8px 10px;font-size:11px;line-height:1.5}
+.pdf-flow .flow-number{font-size:9px;color:#999}
+.pdf-flow li>span:last-child{font-weight:600}
+.pdf-project-links{display:flex;flex-wrap:wrap;gap:15px;margin-top:14px}
+.pdf-project-links a{font-size:10px;color:#777;text-decoration:underline;text-underline-offset:3px}
+.pdf-role{padding:10px 14px;background:#f4f4f4;border-left:3px solid #baa48d;margin-bottom:16px}
+.pdf-role strong{display:block;font-size:15px;line-height:1.6;color:#111;font-weight:700}
+.pdf-work{margin-bottom:17px}
+.pdf-implementation{margin:0;padding-left:18px;font-size:14px;line-height:1.7;color:#333}
+.pdf-implementation li{margin:0 0 8px;padding-left:3px}
+.pdf-result{border-top:1px solid #ddd;padding-top:13px}
+.pdf-result strong{display:block;font-size:13px;line-height:1.7;font-weight:700}
+.pdf-body .pdf-limitation{font-size:12px;line-height:1.7;margin-top:7px;color:#777}
+/* Profile: large portrait with an editorial text column, matching the website. */
+.pdf-profile .pdf-body{gap:40px;padding-top:24px}
+.pdf-profile-hero{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:65px;align-items:start}
+.pdf-intro-copy h1{font-size:62px;line-height:1.1;margin:8px 0 2px}
+.pdf-body .pdf-name-en{font-size:16px;color:#888;margin-bottom:6px}
+.pdf-body .pdf-position{font-size:25px;line-height:1.4;font-weight:600;color:#111}
+.pdf-body .pdf-description{font-size:16px;line-height:1.85;margin:19px 0 21px;max-width:650px}
+.pdf-facts{display:grid;grid-template-columns:1fr 1fr;gap:13px 24px;margin:0}
+.pdf-facts>div{border-top:1px solid #d8d8d8;padding-top:9px}
+.pdf-facts dt{font-size:10px;color:#999;letter-spacing:.08em;margin-bottom:4px}
+.pdf-facts dd{font-size:14px;line-height:1.6;margin:0;color:#222}
+.pdf-facts br{display:initial}
+.pdf-portrait{margin:0}
+.pdf-portrait img{display:block;width:280px;height:363px;object-fit:contain;border:1px solid #ddd;background:#f5f5f5}
+.pdf-profile-link{display:block;text-align:right;font-size:11px;color:#777;margin-top:11px}
+.pdf-skills{display:grid;grid-template-columns:repeat(4,1fr);background:#151515;color:white;flex:none}
+.pdf-skill{display:flex;flex-direction:column;padding:18px 17px;border-right:1px solid #444;min-width:0}
+.pdf-skill:last-child{border:0}
+.pdf-skill h2{font-size:14px;letter-spacing:-.015em;color:#fff;margin-bottom:13px;white-space:nowrap}
+.pdf-skill p{font-size:11px;line-height:1.7;color:#ddd;flex:1}
+.pdf-skill .pdf-skill-context{font-size:10px;flex:0;margin-top:12px;padding-top:8px;border-top:1px solid #555;color:#999}
+@media print{
+  html,body.print-view{margin:0;padding:0;background:#fff;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .print-toolbar,.print-help,noscript{display:none!important}
+  .pdf-sheet{margin:0;box-shadow:none;break-after:page;break-inside:avoid}
+  .pdf-sheet:last-child{break-after:auto}
+}
