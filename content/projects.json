@@ -2,68 +2,76 @@
   {
     "id": "fms",
     "number": "01",
-    "name": "AX Logistics MultiBot",
+    "name": "AX Logistics Multi Robot",
     "category": "MULTI-ROBOT / FMS",
     "status": "진행 중",
-    "period": "2026 / 진행 중",
+    "period": "2026.09 – 진행 중",
     "team": "7명",
     "type": "robot",
-    "summary": "여러 로봇의 상태와 명령을 연결하는 ROS 2 기반 물류 관제 시스템",
-    "role": "FMS ↔ ROS 2 통신 및 로봇 시스템 통합",
-    "overview": "ROS 2 Jazzy와 Nav2 로봇의 위치와 상태를 관제 시스템에서 확인하고 이동 명령을 전달하는 팀 프로젝트입니다. 현재는 통신과 관제 연동을 중심으로 구현하고 있습니다.",
+    "summary": "Zenoh와 MQTT로 로봇 3대와 로봇팔 작업을 연결한 ROS 2 물류 관제 시스템",
+    "role": "FMS 백엔드와 다중 로봇 통신, 주행, 작업 시퀀스 통합",
+    "overview": "ROS 2 Jazzy 기반 로봇 3대와 OMX 로봇팔의 상태를 관제하고 주문 작업을 이어 주는 7인 팀 프로젝트입니다. 로봇과 FMS는 Zenoh, 로봇팔과 FMS는 MQTT로 통신합니다. 실제 로봇 주행과 시뮬레이션 모드를 분리하고, 주문부터 Pickup과 Workstation까지의 흐름을 통합하고 있습니다.",
     "stack": [
       "ROS 2 Jazzy",
       "Zenoh",
+      "MQTT",
       "Nav2",
-      "Python"
+      "FastAPI"
     ],
     "implementation": [
-      "Zenoh 텔레메트리 수신과 로봇 상태, 목적지 데이터 연동",
-      "Mock Robot / Mock Fleet 테스트 코드와 로봇별 실행 환경 구성",
-      "ROS 2 도메인, Bridge namespace, 필터 설정 및 통신 문제 추적",
-      "클라이언트 연결 확인, 차단과 TurtleBot 연동"
+      "로봇 3대에 동일한 실행 환경을 구성하고 namespace 인자로 구분; 로컬 DDS와 Zenoh Bridge와 Router 연결 관리",
+      "FMS 백엔드에서 로봇과 OMX 객체별 연결 상태와 명령을 관리하고 실기와 시뮬레이션 모드 분리",
+      "Route Graph 경로를 Nav2 FollowWaypoints로 전달하고 주행 상태, 경로 재생성, 정지, 비상정지 제어",
+      "Pickup, Workstation, 충전 노드별 최종 Yaw를 지정하고 일반 이동과 충전과 자동 도킹 명령 분리",
+      "주문 → Pickup 이동 → ArUco 정렬 → MQTT OMX 작업 명령으로 이어지는 시퀀스와 예외 흐름 통합",
+      "Chrony로 Main PC와 로봇 시각을 맞추고 LiDAR Scan 지연을 점검해 source_timeout을 0.2초에서 0.5초로 조정"
     ],
-    "external": "Nav2, TurtleBot3, zenoh-bridge-ros2dds를 적용했습니다. 물류 시나리오와 맵, 다른 로봇 기능은 팀원들과 분담했습니다.",
-    "problem": "관제 화면의 로봇 위치가 반복해서 튀는 현상이 발생했습니다.",
-    "decision": "Zenoh 직접 모니터링으로 DB 이전의 데이터 유입을 확인했습니다. 자동 탐색을 제한하고 로봇별 DDS 도메인, Bridge namespace와 deny 필터를 정리했습니다.",
-    "result": "통신 경로 분리와 설정 변경을 코드, 디버깅 문서에 남겼습니다. 전체 물류 운영 시나리오는 계속 통합 중입니다.",
-    "limitation": "다음 단계에서는 자동 주문 배차, 자원 점유, 교통관리와 Deadlock 처리를 연결해 통합 시나리오로 시험할 예정입니다. OMX 연동과 VLM 비교도 함께 진행합니다.",
+    "external": "경로 탐색, ArUco 정렬, 로봇팔 기능을 FMS 백엔드의 주행과 작업 시퀀스에 연결하고, 로봇과 로봇팔의 통신 환경을 구성했습니다. 제 담당 범위는 백엔드와 실기 통합입니다.",
+    "problem": "실환경에서 LiDAR Scan 지연, 특수 노드 도착 방향 오류, 일반 이동 중 불필요한 자동 도킹이 발생했습니다.",
+    "decision": "Main PC 기준 Chrony 동기화와 source_timeout 조정으로 지연을 완화했습니다. 특수 노드에 고정 Yaw를 넣고, 충전 명령과 저전력 자동 복귀에만 도킹이 실행되도록 조건을 분리했습니다.",
+    "result": "로봇의 작업 지점 정지 방향과 충전 조건을 명확히 하고, Pickup 도착부터 ArUco 정렬과 MQTT 로봇팔 명령까지 하나의 작업 흐름으로 연결했습니다.",
+    "limitation": "실환경 작업 흐름을 통합 중인 프로젝트입니다.",
     "diagram": [
-      "관제 화면",
-      "FMS Core",
-      "Zenoh Bridge",
-      "ROS 2 / Nav2"
+      "FMS 백엔드",
+      "Zenoh / 로봇 3대",
+      "Pickup과 ArUco",
+      "MQTT / OMX"
     ],
     "images": [
       {
-        "src": "fms-route.svg",
-        "alt": "실제 GeoJSON 노드와 엣지로 그린 FMS 경로 그래프",
-        "caption": "Route Graph / GeoJSON 기반 경로 시각화"
+        "src": "fms-map-robot.png",
+        "alt": "현재 모의 로봇 데이터로 표시한 관제 화면",
+        "caption": "실제 맵과 로봇 주행 이미지 교체 예정 (현재: 모의 관제 화면)"
       },
       {
         "src": "fms-system.svg",
-        "alt": "FMS와 로봇 간 ROS 2 및 Zenoh 통신 구성도",
-        "caption": "FMS / Zenoh / ROS 2 통신 구성"
+        "alt": "현재 GeoJSON 경로 그래프 시각화",
+        "caption": "전체 관제, 로봇, 로봇팔 구조 이미지 교체 예정 (현재: 경로 그래프)"
       }
     ],
-    "github": "https://github.com/E1I6-Logistics/Logistics_FMS/tree/ugie-fms",
-    "readme": "https://github.com/E1I6-Logistics/Logistics_FMS/blob/ugie-fms/README.md",
+    "github": "https://github.com/E1I6-Logistics/Logistics_FMS/tree/ugie-customize",
+    "readme": "https://github.com/E1I6-Logistics/Logistics_FMS/blob/ugie-customize/README.md",
     "demo": "",
     "demoNote": "현재 개발 중",
-    "source": "https://github.com/E1I6-Logistics/Logistics_FMS/blob/ugie-fms/backend/app/services/zenoh_service.py"
+    "source": "https://github.com/E1I6-Logistics/Logistics_FMS/blob/ugie-customize/backend/app/ros2/ros_gateway.py",
+    "highlight": "로봇 3대 주행과 Pickup → ArUco → OMX 작업 흐름 연동",
+    "coverImage": {
+      "src": "fms-cover.png",
+      "alt": "모의 로봇 데이터로 표시한 FMS 관제 웹페이지 화면"
+    }
   },
   {
     "id": "gosung",
     "number": "02",
     "name": "GoSung",
     "category": "ROBOT SYSTEM INTEGRATION",
-    "status": "구현 완료",
+    "status": "주행 목표 미달",
     "period": "2024.04 – 2024.12",
     "team": "6명",
     "type": "robot",
-    "summary": "센서 MCU와 구동 MCU를 ROS 2에 연결한 실외 배달 로봇",
-    "role": "STM32 펌웨어 및 ROS 2 센서, 제어 연동",
-    "overview": "교내 실외 환경에서 배달 로봇의 주행을 시도한 프로젝트입니다. 센서 수집, 로봇 구동, ROS 2와 모바일 앱을 연결했습니다.",
+    "summary": "STM32 센서와 구동부와 ROS 2를 연결한 교내 배달 로봇 시제품",
+    "role": "STM32 센서와 구동 펌웨어와 ROS 2 연동",
+    "overview": "교내 카페 주문을 가정한 별도 시험 앱, DB, ROS 2 Humble과 4륜 로봇을 연결했습니다. 센서 수집과 구동부 제어는 구현했지만, 모터 토크와 마찰력과 스키드 스티어링 구조를 충분히 고려하지 못해 목표한 회전과 배달 주행은 달성하지 못했습니다.",
     "stack": [
       "STM32F407",
       "FreeRTOS",
@@ -72,38 +80,44 @@
       "OpenCV"
     ],
     "implementation": [
-      "센서, 구동 MCU 분리 및 IMU/GPS UART 수신, 파싱",
-      "ROS 2 Serial Node에서 /imu, /fix, /odom 데이터 변환",
-      "Hall Sensor 속도 추정과 오차에 따른 PWM 증감 보정",
-      "SRF08 초음파 정지 로직, 경사로 정차 보정 및 Camera–LiDAR 연계"
+      "핀 수 제약으로 STM32F407 센서 MCU와 구동 MCU를 분리하고 IMU와 GPS 데이터를 UART로 수집과 전달",
+      "구동 MCU에서 좌우 목표 속도(mm/s)를 받아 BLDC 모터 PWM을 출력하고 홀센서 인터럽트로 속도 변화를 추정",
+      "초음파 센서의 근접 정지 명령은 ROS 2 제어 경로와 별도로 구동 MCU에서 처리",
+      "정지 뒤 홀센서 변화로 경사로 밀림 방향을 추정하고 반대 방향 PWM을 작게 가하는 정차 보정 실험",
+      "카메라 보정과 YOLOv5 ROS 2와 Lakibeam 드라이버를 이용한 객체 영역 기반 LiDAR Scan 필터링 실험"
     ],
-    "external": "Nav2, YOLOv5 ROS 2 wrapper와 Lakibeam ROS 2 Driver를 적용했습니다. 저는 센서 MCU와 구동 MCU를 ROS 2에 연결하고 실제 로봇에서 통합했습니다.",
-    "problem": "정지 명령을 내려도 경사로에서 로봇이 미끄러졌습니다.",
-    "decision": "정지 시점 이후 Hall Sensor 변화를 확인하고, 미끄러지는 방향의 반대로 PWM을 보정하는 로직을 구현했습니다.",
-    "result": "당시 실험에서 경사로 정차 동작을 확인했습니다. MCU부터 ROS 2, 앱까지 실제 장치의 데이터 흐름을 연결했습니다.",
-    "limitation": "급가속과 평지 외력을 경사로로 판단하는 경우가 있었습니다. 이후 별도 SensorFusion 실험에서 Camera와 LiDAR의 시간 동기화를 보완했습니다.",
+    "external": "Nav2, YOLOv5 ROS 2 wrapper와 Lakibeam ROS 2 Driver를 적용했습니다. 저는 MCU 펌웨어와 센서와 구동 연결, Camera와 LiDAR 데이터 결합 실험을 담당했습니다. 속도 보정은 단순 PWM 증감으로 PID 제어가 아닙니다.",
+    "problem": "경사로 정지 후 로봇이 미끄러졌고, 4륜 스키드 스티어링의 회전 요구 토크를 충족하지 못했습니다.",
+    "decision": "홀센서 카운트 변화와 방향을 이용해 정지 시 반대 방향 PWM을 주는 보정을 실험했습니다. 카메라와 LiDAR 데이터도 좌표 변환해 합쳤지만 시각 동기화는 적용하지 않았습니다.",
+    "result": "센서와 구동 MCU와 ROS 2 간 데이터 흐름 및 경사로 정차 보정을 시험했습니다. 그러나 전체 배달 경로 주행은 성공하지 못했습니다.",
+    "limitation": "평지에서 외력으로 밀어도 경사로로 오인식했고, 속도 측정 정확도와 PWM 보정의 정량 검증과 간헐적 급가속 문제 해결은 완료하지 못했습니다. 객체 기반 Scan 필터는 객체 검출에 지나치게 의존했습니다.",
     "diagram": [
       "IMU / GPS",
       "센서 STM32",
       "ROS 2",
-      "구동 STM32 / 모터"
+      "구동 STM32 / BLDC"
     ],
     "images": [
       {
-        "src": "gosung-robot.webp",
-        "alt": "GoSung의 4륜 로봇과 내부 배선, 제어 장치",
-        "caption": "실제 로봇 / 센서와 구동 장치 통합"
+        "src": "gosung-sensor-fusion.webp",
+        "alt": "카메라 객체 박스와 LiDAR 데이터를 함께 표시한 실험 화면",
+        "caption": "카메라와 LiDAR 센서 융합 실험 화면"
       },
       {
-        "src": "gosung-fusion.webp",
-        "alt": "카메라 객체 박스와 LiDAR 데이터를 함께 표시한 실험 화면",
-        "caption": "Camera + LiDAR / 당시 실험 화면"
+        "src": "gosung-ramp-stop.jpg",
+        "alt": "경사로 정지 시험 당시의 GoSung 로봇 사진",
+        "caption": "경사로 정지 시험 당시 로봇"
       }
     ],
     "github": "https://github.com/Ugie01/GoSung",
     "readme": "https://github.com/Ugie01/GoSung#readme",
     "demo": "https://www.youtube.com/watch?v=ovQ-Pq1NfFU",
-    "source": "https://github.com/Ugie01/GoSung/tree/HEAD/stm32"
+    "source": "https://github.com/Ugie01/GoSung/tree/HEAD/stm32",
+    "highlight": "센서와 구동 연동 시험, 목표한 배달 주행은 미달",
+    "coverImage": {
+      "src": "gosung-cover.jpg",
+      "alt": "완성된 GoSung 4륜 로봇"
+    }
   },
   {
     "id": "aiming",
@@ -114,9 +128,9 @@
     "period": "2026.07.23 – 08.04",
     "team": "4명",
     "type": "embedded",
-    "summary": "STM32H743에서 카메라 입력과 AI 추론, Pan/Tilt 제어를 연결한 PoC",
-    "role": "추론 파이프라인, FreeRTOS 태스크, 하드웨어 통합",
-    "overview": "단일 MCU에서 기존 FOMO 모델의 객체 검출 결과를 받아 Pan/Tilt 동작으로 연결한 실험입니다. 실제 하드웨어에서 입력부터 제어까지 이어지는 파이프라인을 확인했습니다.",
+    "summary": "STM32H743 한 대에 카메라, AI 추론, Pan/Tilt 추적을 연결한 PoC",
+    "role": "OV2640과 Edge Impulse 연동과 추적 상태 로직 구현",
+    "overview": "STM32H743 한 대에서 OV2640 카메라 입력과 팀원이 학습한 AI 모델의 추론 결과를 받아 Pan/Tilt 구동과 레이저 출력으로 이어 주는 시제품입니다. FreeRTOS 태스크로 영상 처리와 제어 작업을 나누었습니다.",
     "stack": [
       "STM32H743",
       "FreeRTOS",
@@ -125,38 +139,44 @@
       "C / C++"
     ],
     "implementation": [
-      "OV2640 DCMI/DMA 프레임 수신과 AI 입력 변환",
-      "기존 Edge Impulse/FOMO 모델의 보드 추론 파이프라인 연동",
-      "Vision, Motor 태스크를 Queue와 Semaphore로 연결",
-      "검출 좌표 기반 추적과 Joystick 수동 모드, 출력 제어 통합"
+      "오픈소스 OV2640 설정 코드를 통합하고 카메라 프레임을 팀원의 LCD 출력 형식에 맞게 변환",
+      "Edge Impulse FOMO 모델의 보드 추론 경로를 연결하고 얼굴 인식 모델로 연동 가능성 시험",
+      "추론 좌표의 흔들림에 EMA와 Miss Tolerance를 적용해 순간 검출 누락 완화",
+      "Idle → Tracking → Lock-on 상태 머신으로 추적과 출력 흐름 구성",
+      "카메라 클럭을 조정해 약 7 FPS에서 14~15 FPS까지 시험했으나 청색 노이즈로 안정적인 약 7 FPS 설정을 선택"
     ],
-    "external": "AI 모델은 팀원이 학습했습니다. 저는 기존 모델과 OV2640 드라이버, 서보 제어 코드를 STM32H743의 추론, 제어 파이프라인으로 통합했습니다.",
-    "problem": "카메라 클럭을 높였을 때 화면에 파란 노이즈가 생겼습니다.",
-    "decision": "높은 입력 프레임률을 유지하기보다 기존의 안정적인 설정으로 돌아가 전체 입력, 추론, 구동 파이프라인을 확인했습니다.",
-    "result": "영상 입력, 모델 추론, 상태 전이와 하드웨어 제어를 실제 보드에서 연결했습니다.",
-    "limitation": "모니터 재촬영과 모션 블러 환경에서는 인식률이 떨어졌습니다. 다음 단계로 입력 환경과 조명 조건을 고정한 재측정이 필요합니다.",
+    "external": "AI 모델 학습, LCD 기본 코드와 서보 PID 제어는 팀원이 담당했습니다. 저는 카메라, 모델, LCD, 추적 상태 로직을 STM32H743에서 연결했습니다.",
+    "problem": "입력 FPS를 높이면 영상에 청색 노이즈가 생겼고, 추론 좌표가 흔들리거나 일시적으로 사라졌습니다.",
+    "decision": "배선과 접점을 점검했으나 고클럭 노이즈를 없애지 못해 기존 카메라 설정으로 돌아갔습니다. 추적 좌표에는 EMA와 Miss Tolerance를 적용했습니다.",
+    "result": "안정적인 영상 입력, 추론, Pan/Tilt 추적 흐름을 실제 보드에서 확인했습니다.",
+    "limitation": "고클럭 입력의 영상 노이즈는 해결하지 못해 약 7 FPS로 진행했습니다. 모델 학습과 서보 PID 제어는 제 담당 범위가 아닙니다.",
     "diagram": [
-      "OV2640 / DMA",
-      "Vision Task",
-      "Queue",
-      "Motor Task / Pan, Tilt"
+      "OV2640 카메라",
+      "FreeRTOS / 추론",
+      "EMA와 상태 머신",
+      "Pan/Tilt와 출력"
     ],
     "images": [
       {
-        "src": "aiming-board.webp",
-        "alt": "AIMing MCU와 디스플레이의 실제 실험 배선",
-        "caption": "STM32H7 실물 / 디스플레이와 카메라 연동"
+        "src": "aiming-blue-noise.webp",
+        "alt": "AIMing 화면에 나타난 파란색 노이즈",
+        "caption": "영상 입력에서 나타난 파란색 노이즈"
       },
       {
-        "src": "aiming-demo.webp",
-        "alt": "AIMing 시연 영상에서 추출한 보드 디스플레이와 대상 화면",
-        "caption": "로컬 시연 영상의 대표 프레임"
+        "src": "aiming-lock-on.jpg",
+        "alt": "AIMing 보드 화면의 Lock-On 상태",
+        "caption": "Lock-On 상태를 표시한 보드 화면"
       }
     ],
     "github": "https://github.com/Ugie01/AIMing_Project",
     "readme": "https://github.com/Ugie01/AIMing_Project#readme",
     "demo": "https://www.youtube.com/watch?v=Eg0nYeOGCXA",
-    "source": "https://github.com/Ugie01/AIMing_Project/tree/HEAD/aiming_project/Core/Src/Tasks"
+    "source": "https://github.com/Ugie01/AIMing_Project/tree/HEAD/aiming_project/Core/Src/Tasks",
+    "highlight": "약 7 FPS 설정에서 보드 추론과 추적 흐름 확인",
+    "coverImage": {
+      "src": "aiming-cover.webp",
+      "alt": "AIMing 시연 영상에서 추출한 대표 프레임"
+    }
   },
   {
     "id": "tracking",
@@ -167,155 +187,198 @@
     "period": "2026.05.11 – 05.21",
     "team": "4명",
     "type": "robot",
-    "summary": "Pose와 객체 인식 결과를 로봇의 추적 명령으로 연결한 순찰 로봇",
-    "role": "인식 결과 기반 트래킹 로직 및 제어 시스템 연동",
-    "overview": "Raspberry Pi의 비전 인식 결과를 STM32 주행 제어와 연결하고, 모바일 앱에서 수동 제어와 상태 확인을 제공하는 팀 프로젝트입니다.",
+    "summary": "Pose 기반 상황 판단과 대상 재식별을 주행 명령에 연결한 추적 로봇",
+    "role": "Pose 상황 판단과 대상 추적과 모바일 제어 기능 구현",
+    "overview": "Raspberry Pi 5에서 팀원이 만든 비전 모델의 사람과 Pose 결과를 받아 위험 상황과 낙상 의심 대상을 판단하고, STM32 주행부에 추적 명령을 보내는 4인 팀 프로젝트입니다. 모바일 앱의 수동 제어와 PID 게인 설정, Flask 영상 확인 화면도 구성했습니다.",
     "stack": [
       "Raspberry Pi 5",
-      "STM32F407",
+      "STM32",
       "Python",
       "Bluetooth",
-      "Flutter"
+      "모바일 앱"
     ],
     "implementation": [
-      "Pose 결과를 이용한 상황 판단과 우선순위 대상 선택",
-      "Bounding Box 위치 기반 목표 방향과 주행 명령 연동",
-      "대상 유실 시 대기, 탐색 및 색상 히스토그램 기반 재식별",
-      "대상이 화면에 보이는 크기에 따른 거리 조절 로직",
-      "STM32 펌웨어, Yaw PID 일부 구현 지원"
+      "팔, 어깨, 다리 Pose 각도를 이용해 폭력과 낙상 의심 상황을 판단하고 추적 대상 선택",
+      "Bounding Box의 위치와 가로와 세로 크기로 목표 방향과 화면 내 거리 유지 동작 생성",
+      "대상 유실 시 회전 탐색 후 색상 히스토그램을 비교해 기존 대상 재식별 시도",
+      "모바일 앱에서 수동 제어와 PID 게인 설정과 저장, Flask에서 카메라 영상 확인 기능 구성",
+      "STM32 펌웨어와 PID 구현 일부를 지원하며 라즈베리파이 추적 명령과 주행부 연동"
     ],
-    "external": "트래킹 로직을 주로 담당했습니다. AI 모델 학습과 STM32 센서, 구동, PID는 팀원이 주도했고, 저는 펌웨어와 PID 구현 일부를 지원했습니다.",
-    "problem": "대상이 화면에서 사라지면 추적 상태를 그대로 유지하기 어려웠습니다.",
-    "decision": "유실 시 대기, 회전 탐색 상태를 두고, 다시 나타난 대상의 색상 히스토그램을 비교하는 로직을 연동했습니다.",
-    "result": "인식 결과에서 목표 방향을 만들고 로봇 제어까지 전달하는 시연을 구성했습니다.",
-    "limitation": "재식별은 의복, 조명 변화에 영향을 받습니다. 화재 대응과 장시간 무인 순찰은 검증하지 않았습니다.",
+    "external": "비전 모델 학습과 STM32 센서, 모터, PID의 주 구현은 팀원이 담당했습니다. 저는 모델 출력 후 상황 판단과 추적 로직과 앱 기능을 주로 구현했습니다.",
+    "problem": "상황 판단한 사람이 화면에서 사라졌다가 다시 나타나면 다른 대상으로 인식하는 문제가 있었습니다.",
+    "decision": "판단 당시 대상의 색상 히스토그램을 저장하고 재등장 객체와 비교하는 로직을 넣었습니다.",
+    "result": "Pose 판단, 대상 추적과 주행 명령 전달을 시연했습니다.",
+    "limitation": "재식별은 조명과 복장 변화에 민감했습니다. 화재 감지는 시험하지 못해 범위에서 제외했고, 장시간 무인 순찰은 검증하지 않았습니다.",
     "diagram": [
       "Camera / Pose",
-      "RPi 트래킹",
-      "UART",
+      "상황 판단과 재식별",
+      "RPi 주행 명령",
       "STM32 / 모터"
     ],
     "images": [
       {
-        "src": "tracking-robot.webp",
-        "alt": "Tracking Patrol Robot의 실제 하부 제어 장치와 배선",
-        "caption": "Tracking Patrol Robot / 하부 제어 장치"
+        "src": "tracking-normal.webp",
+        "alt": "Tracking Patrol Robot의 정상 상황 판단 화면",
+        "caption": "실제 시연 화면에서 추론 영상 부분만 표시",
+        "panels": [
+          {
+            "src": "tracking-normal.webp",
+            "label": "정상"
+          },
+          {
+            "src": "tracking-danger.png",
+            "label": "위험"
+          },
+          {
+            "src": "tracking-fall.png",
+            "label": "낙상"
+          }
+        ]
       },
       {
-        "src": "tracking-demo.webp",
-        "alt": "실내 인물의 Pose와 추적 박스를 표시한 실제 시연 화면",
-        "caption": "대상 인식, 트래킹 시연 화면"
+        "src": "tracking-distance.png",
+        "alt": "영상 기반 추적과 거리 유지 판단 설명 자료",
+        "caption": "가로와 세로 자세에 따른 화면 점유율 기반 거리 유지",
+        "panels": [
+          {
+            "src": "tracking-distance.png",
+            "label": "가로 자세",
+            "description": "낙상 상태는 박스의 가로와 세로 점유율 중 큰 값과 별도 임계값 사용"
+          },
+          {
+            "src": "tracking-distance.png",
+            "label": "세로 자세",
+            "description": "서 있는 대상은 박스 높이의 화면 점유율 사용"
+          }
+        ]
       }
     ],
     "github": "https://github.com/Ugie01/Tracking_Patrol_Robot",
     "readme": "https://github.com/Ugie01/Tracking_Patrol_Robot#readme",
     "demo": "https://www.youtube.com/watch?v=0Xhue5Aivyg",
-    "source": "https://github.com/Ugie01/Tracking_Patrol_Robot/tree/HEAD/ai_vision"
+    "source": "https://github.com/Ugie01/Tracking_Patrol_Robot/tree/HEAD/ai_vision",
+    "highlight": "Pose 상황 판단과 대상 추적과 주행 명령 시연",
+    "coverImage": {
+      "src": "tracking-cover.webp",
+      "alt": "인물 Pose와 추적 박스를 표시한 시연 화면"
+    }
   },
   {
     "id": "vip",
     "number": "05",
     "name": "VIP Wearable",
     "category": "EDGE SYSTEM / HAPTIC",
-    "status": "프로토타입 구현",
+    "status": "프로토타입 실험",
     "period": "2026.07.01 – 08.12",
     "team": "2명",
     "type": "embedded",
-    "summary": "보행 경로와 AI 인식 결과를 음성과 진동 안내로 전달하는 웨어러블",
-    "role": "IMU, 햅틱 제어 및 Bluetooth, Android 연동",
-    "overview": "시각장애인의 보행 보조를 목표로 Raspberry Pi 5, IMU, 진동 모터와 Android 길안내 앱을 연결한 프로토타입입니다.",
+    "summary": "TMAP 경로, IMU 방향, AI 인식 결과를 진동으로 전달한 보행 보조 시제품",
+    "role": "IMU 방향과 진동 제어와 Android 앱 기능 통합",
+    "overview": "시각장애인의 보행 보조를 목표로 Android TMAP 경로, Raspberry Pi 5의 IMU 방향 정보와 팀원의 장애물과 보행 영역 인식 결과를 연결한 2인 시제품입니다. 목적지 입력, 방향 표시와 좌우 진동 안내를 구현했지만 GPS와 방향 오차로 전체 보행 경로의 정상 동작은 검증하지 못했습니다.",
     "stack": [
       "Raspberry Pi 5",
-      "IMU / FSM",
-      "Bluetooth RFCOMM",
-      "lgpio",
+      "UART IMU",
+      "Bluetooth Classic",
+      "TMAP API",
       "Android Java"
     ],
     "implementation": [
-      "IMU UART 패킷 파싱과 가속도, 각속도 기반 3단계 낙상 FSM",
-      "낙상, 경로 회전, 장애물 상황에 따른 햅틱 우선순위 제어",
-      "lgpio PWM 모터 제어와 AI 회피 결과 연동",
-      "Bluetooth RFCOMM 및 TMAP, 음성 안내 Android 앱 구현"
+      "필터가 내장된 IMU의 UART Yaw를 읽어 사용자 방향을 앱에 표시하고 TMAP 경로 waypoint와 비교",
+      "목적지 텍스트와 음성 입력과 취소, 방향 오차 범위에 따른 직진과 회전 판단 기능 구현",
+      "팀원의 장애물과 보행 영역 인식 결과와 진행 방향을 서로 다른 좌우 모터 진동 패턴으로 연결",
+      "STM32↔Raspberry Pi UART 불안정으로 Raspberry Pi 직접 제어로 설계를 바꾸고 불량 햅틱 모듈은 DC 모터로 교체",
+      "BLE 연결 끊김이 잦아 Bluetooth Classic 연결 방식을 적용하고 후속 자동 연결 동작 구성"
     ],
-    "external": "비전 모델과 AI 파이프라인은 팀원이 담당했습니다. 저는 인식 결과를 햅틱 제어에 연결하고 TMAP API, Android SDK와 lgpio를 적용했습니다.",
-    "problem": "BLE 연결을 사용하던 중 끊김과 데이터 동기화 문제가 있었습니다.",
-    "decision": "Bluetooth Classic RFCOMM으로 통신 방식을 변경했습니다. 현재 Raspberry Pi와 Android 코드에서 같은 통신 방식을 확인할 수 있습니다.",
-    "result": "BLE에서 발생하던 연결 끊김과 동기화 문제를 줄이고, 경로, 센서, AI 정보를 상황별 진동 안내로 연결했습니다.",
-    "limitation": "위치 추정과 재연결 복구에는 개선이 필요합니다. 낙상 감지 정확도와 실제 보행 안전성은 추가 시험이 필요한 단계입니다.",
+    "external": "장애물과 보행 영역 모델은 팀원이 구현했습니다. 저는 센서, 앱, 진동 동작을 연결했습니다.",
+    "problem": "BLE 연결과 초기 UART 구성이 불안정했고, GPS 시작 위치 오차가 커 경로 안내가 빗나갔습니다.",
+    "decision": "Bluetooth Classic과 Raspberry Pi 직접 제어로 하드웨어 경로를 단순화하고 방향별 진동 패턴을 구성했습니다.",
+    "result": "목적지 입력, 방향 표시, 장애물 및 방향별 진동 기능을 개별적으로 연동했습니다.",
+    "limitation": "GPS, IMU, 경로 오차로 실제 목적지까지의 정상 보행 안내는 확인하지 못했습니다. 경로 음성 안내와 낙상 감지는 충분히 구현과 검증하지 못해 성과에서 제외했습니다.",
     "diagram": [
       "Android / TMAP",
-      "RFCOMM",
-      "RPi / IMU, AI",
-      "좌, 우 햅틱"
+      "Bluetooth Classic",
+      "RPi / IMU와 AI",
+      "좌우 DC 모터"
     ],
     "images": [
       {
-        "src": "vip-demo.webp",
-        "alt": "웨어러블 프로젝트의 실제 거리 인식 및 길안내 앱 시연",
-        "caption": "실외 장애물 인식과 길안내 시연"
+        "src": "vip-route.webp",
+        "alt": "Android TMAP 앱의 보행 경로 생성 화면",
+        "caption": "앱에서 생성한 보행 경로"
       },
       {
-        "src": "vip-app.webp",
-        "alt": "Android TMAP 보행 안내 앱 화면",
-        "caption": "Android / TMAP 길안내 화면"
+        "src": "vip-obstacle-app.webp",
+        "alt": "장애물 인식 결과와 앱 안내를 나란히 보여주는 시연 화면",
+        "caption": "장애물 인식 결과와 앱 안내 화면"
       }
     ],
     "github": "https://github.com/Ugie01/2026ESWContest_free_VIPWEARABLE",
     "readme": "https://github.com/Ugie01/2026ESWContest_free_VIPWEARABLE#readme",
     "demo": "https://www.youtube.com/watch?v=4h71w1IgXRw",
-    "source": "https://github.com/Ugie01/2026ESWContest_free_VIPWEARABLE/tree/HEAD/vip_wearable_rasi/basic"
+    "source": "https://github.com/Ugie01/2026ESWContest_free_VIPWEARABLE/tree/HEAD/vip_wearable_rasi/basic",
+    "highlight": "방향과 장애물 진동 연동, 전체 경로 안내는 미검증",
+    "coverImage": {
+      "src": "vip-cover.jpg",
+      "alt": "얼굴을 모자이크한 VIP Wearable 착용 사진"
+    }
   },
   {
     "id": "plc",
     "number": "06",
-    "name": "PLC Mini Project",
+    "name": "MPS 창고 적재 제어",
     "category": "SEQUENCE CONTROL / TRAINING",
     "status": "교육 프로젝트",
-    "period": "교육 과정 중",
+    "period": "2026.06.12 – 06.17",
     "team": "2명",
     "type": "embedded",
-    "summary": "MPS 트레이너로 구성한 창고 적재, 비우기와 수동 제어 실습",
+    "summary": "Mitsubishi PLC와 HMI로 층별 적재와 비우기, 수동 운전을 구현한 교육 프로젝트",
     "role": "PLC 시퀀스, HMI 제어 공동 구현",
-    "overview": "공급, 분배, 판별, 저장 과정을 연결하고, 창고 층별 적재와 수동 제어를 구성한 교육용 미니 프로젝트입니다.",
+    "overview": "MPS 트레이너와 Mitsubishi PLC, HMI를 이용해 창고의 층별 적재와 비우기와 수동 개별 제어를 구성한 2인 교육 프로젝트입니다.",
     "stack": [
-      "Mitsubishi Q03UDVCPU",
+      "Mitsubishi PLC",
       "GX Works2",
       "GT Designer3",
       "Ladder",
       "HMI"
     ],
     "implementation": [
-      "층별 적재, 비우기와 수동 개별 제어 시퀀스 공동 구현",
-      "HMI 장비 제어, 설비 점검, 위치 티칭 화면 구성",
-      "적재 순서 제한과 서보 초기 가동 문제 확인"
+      "GX Works2 래더로 층별 적재와 비우기 시퀀스와 수동 개별 제어를 공동 구현",
+      "GT Designer3 HMI에서 적재 상태 램프, 위치 버튼, 설비 점검과 티칭 화면 구성",
+      "3층 적재 전 4층 적재 금지, 4층 비움 전 3층 비움 금지 조건 구현",
+      "서보 리셋 직후 구동 오류에 대기 시간을 추가하고 OR/NOT 접점 배치 오류로 상시 도통되던 코일 수정"
     ],
-    "external": "2인 공동 프로젝트로 Mitsubishi PLC와 MPS 트레이너를 사용해 시퀀스와 HMI를 함께 구현했습니다.",
-    "problem": "서보 리셋 직후 동작이 간헐적으로 실패했습니다.",
-    "decision": "발표 자료에 기록한 대로 리셋 후 대기 시간을 두어 준비 이후 동작하도록 변경했습니다.",
-    "result": "HMI와 설비를 연결한 전체 동작 영상을 남겼습니다.",
-    "limitation": "교육 장비에서 전체 시퀀스와 HMI 연동을 확인했습니다. 실제 설비 적용에는 안전 인터록과 장애 복구 시나리오가 추가로 필요합니다.",
+    "external": "Mitsubishi PLC와 MPS 트레이너를 사용한 2인 공동 교육 프로젝트입니다. 시퀀스와 HMI를 함께 구현했습니다.",
+    "problem": "서보 모터가 리셋 직후 간헐적으로 동작하지 않았고, 래더 OR/NOT 접점의 논리 배치 오류로 출력 코일이 상시 도통됐습니다.",
+    "decision": "서보 준비 대기 시간을 넣고 자기유지와 차단 조건을 다시 확인해 래더 접점 배치를 수정했습니다.",
+    "result": "층별 적재와 비우기, 수동 버튼과 HMI 상태 표시를 교육 장비에서 확인했습니다.",
+    "limitation": "교육용 MPS 트레이너에서 수행한 프로젝트입니다.",
     "diagram": [
-      "HMI",
+      "HMI 버튼과 램프",
       "PLC / Ladder",
-      "센서, 서보",
-      "적재 / 배출"
+      "서보와 센서",
+      "층별 적재와 비움"
     ],
     "images": [
       {
         "src": "plc-demo.webp",
-        "alt": "PLC 교육 장비와 HMI가 동작하는 실제 영상 프레임",
-        "caption": "MPS 트레이너 / 전체 동작 영상에서 추출"
+        "alt": "MPS 트레이너와 HMI의 동작 장면",
+        "caption": "MPS 트레이너 / 적재와 비우기 동작"
       },
       {
         "src": "plc-hmi.webp",
-        "alt": "PLC 창고 수동 개별 제어 HMI 화면",
+        "alt": "창고 수동 제어 HMI 화면",
         "caption": "HMI / 층별 수동 제어 화면"
       }
     ],
     "github": "",
     "readme": "",
     "demo": "",
-    "demoNote": "시연 영상 준비 중",
-    "source": ""
+    "demoNote": "",
+    "source": "",
+    "highlight": "층별 적재와 비우기와 HMI 수동 제어 확인",
+    "coverImage": {
+      "src": "plc-demo.webp",
+      "alt": "MPS 트레이너와 HMI의 동작 장면"
+    }
   }
 ]
