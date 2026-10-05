@@ -1,5 +1,9 @@
 /* Landscape portfolio: one profile sheet and one summary sheet per project. */
 @page{size:A4 landscape;margin:0}
+@page profile{size:A4 portrait;margin:0}
+@page project{size:A4 portrait;margin:0}
+.pdf-profile{page:profile}
+.pdf-project{page:project}
 .print-view{background:#e9e9e9;font-size:14px;line-height:1.65}
 .print-toolbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 24px;background:#111;color:#fff}
 .print-toolbar p{color:#eee;font-size:13px}
@@ -16,36 +20,147 @@
 .pdf-body h2{font-size:16px;line-height:1.4;margin:0 0 9px;letter-spacing:-.025em}
 .pdf-body .pdf-kicker{font-size:10px;font-weight:700;letter-spacing:.1em;color:#888;line-height:1.5;margin:0 0 6px}
 .pdf-project-heading{flex:none}
+.pdf-project .pdf-body{gap:10px;padding-top:10px;padding-bottom:9px}
 .pdf-title-row{display:flex;align-items:center;gap:18px}
 .pdf-title-row h1{font-size:35px;line-height:1.2;margin:0;letter-spacing:-.04em}
 .pdf-status{font-size:10px;color:#666;padding:3px 8px;background:#f2f2f2;border:1px solid #ddd;white-space:nowrap}
-.pdf-body .pdf-project-summary{font-size:15px;line-height:1.6;margin:6px 0 10px}
+.pdf-body .pdf-project-summary{font-size:14px;line-height:1.5;margin:4px 0 7px}
 .pdf-metadata{display:flex;align-items:center;justify-content:space-between;gap:20px}
 .pdf-meta{font-size:11px;line-height:1.5}
 .pdf-meta span{border-left:1px solid #ddd;margin-left:15px;padding-left:15px}
 .pdf-tags{list-style:none;display:flex;gap:6px;flex-wrap:wrap;margin:0;padding:0}
 .pdf-tags li{font-size:10px;background:#f4f4f4;border:1px solid #ddd;padding:3px 8px}
-.pdf-project-layout{display:grid;grid-template-columns:400px minmax(0,1fr);gap:30px;align-items:start;flex:none;border-top:1px solid #ddd;padding-top:17px}
+.pdf-project-layout{display:grid;grid-template-columns:380px minmax(0,1fr);gap:24px;align-items:start;flex:none;border-top:1px solid #ddd;padding-top:10px}
 .pdf-visual-column,.pdf-content-column{min-width:0}
 .pdf-project-image{margin:0}
-.pdf-project-image img{display:block;width:400px;height:285px;object-fit:contain;background:#f3f3f3;border:1px solid #e2e2e2;padding:8px;filter:none}
+.pdf-project-image img{display:block;width:380px;height:210px;object-fit:contain;background:#f3f3f3;border:1px solid #e2e2e2;padding:7px;filter:none}
 .pdf-project-image figcaption{font-size:10px;line-height:1.5;color:#888;margin-top:6px}
-.pdf-flow-section{margin-top:17px}
-.pdf-flow-section h2{font-size:13px}
-.pdf-flow{list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin:0;padding:0}
-.pdf-flow li{display:flex;align-items:center;gap:8px;min-width:0;background:#f5f5f5;border:1px solid #e0e0e0;padding:8px 10px;font-size:11px;line-height:1.5}
-.pdf-flow .flow-number{font-size:9px;color:#999}
-.pdf-flow li>span:last-child{font-weight:600}
-.pdf-project-links{display:flex;flex-wrap:wrap;gap:15px;margin-top:14px}
+.pdf-flow-section{margin:0}
+.pdf-flow-section h2{font-size:12px;margin-bottom:5px}
+.pdf-flow{list-style:none;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:0;padding:0}
+.pdf-flow li{display:grid;grid-template-columns:18px max-content minmax(0,1fr);align-items:start;gap:0 6px;min-width:0;background:#f5f5f5;border:1px solid #e0e0e0;padding:6px 8px;font-size:9px;line-height:1.35}
+.pdf-flow li>span:first-child{white-space:nowrap;color:#888;font-size:9px}
+.pdf-flow li>strong{white-space:nowrap;font-size:10px;line-height:1.4}
+.pdf-flow li>p{min-width:0;font-size:9px;line-height:1.4;color:#666}
+.pdf-project-links{display:flex;flex-wrap:wrap;gap:13px;margin-top:8px}
 .pdf-project-links a{font-size:10px;color:#777;text-decoration:underline;text-underline-offset:3px}
-.pdf-role{padding:10px 14px;background:#f4f4f4;border-left:3px solid #baa48d;margin-bottom:16px}
-.pdf-role strong{display:block;font-size:15px;line-height:1.6;color:#111;font-weight:700}
-.pdf-work{margin-bottom:17px}
+.pdf-role{padding:7px 11px;background:#f4f4f4;border-left:3px solid #baa48d;margin-bottom:8px}
+.pdf-role strong{display:block;font-size:13px;line-height:1.45;color:#111;font-weight:700}
+.pdf-work{margin-bottom:8px}
+.pdf-work-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.pdf-work-card{min-width:0;border:1px solid #ddd;padding:7px 9px;background:#fafafa}
+.pdf-work-card h3{margin:0 0 7px;color:#111;font-size:12px;line-height:1.4}
+.pdf-work-card .pdf-implementation{font-size:9px;line-height:1.35;padding-left:13px}
+.pdf-work-card .pdf-implementation li{margin-bottom:2px;padding-left:0}
 .pdf-implementation{margin:0;padding-left:18px;font-size:14px;line-height:1.7;color:#333}
 .pdf-implementation li{margin:0 0 8px;padding-left:3px}
-.pdf-result{border-top:1px solid #ddd;padding-top:13px}
-.pdf-result strong{display:block;font-size:13px;line-height:1.7;font-weight:700}
-.pdf-body .pdf-limitation{font-size:12px;line-height:1.7;margin-top:7px;color:#777}
+.pdf-result{border-top:1px solid #ddd;padding-top:8px}
+.pdf-result strong{display:block;font-size:12px;line-height:1.45;font-weight:700}
+.pdf-body .pdf-limitation{font-size:10px;line-height:1.45;margin-top:4px;color:#777}
+.pdf-evidence{margin-top:8px;padding-top:7px;border-top:1px solid #ddd}
+.pdf-evidence h2{font-size:13px;margin-bottom:7px}
+.pdf-evidence-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.pdf-evidence-item{min-width:0;margin:0;border:1px solid #ddd;background:#f4f4f4}
+.pdf-evidence-item img{display:block;width:100%;height:64px;object-fit:cover;object-position:center}
+.pdf-evidence-item figcaption{padding:5px 7px;background:#fff;color:#555;font-size:9px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Project details keep the site's cards, evidence captions and problem-solving layout. */
+.pdf-project .pdf-body{gap:12px;padding-top:10px;padding-bottom:10px}
+.pdf-project .pdf-title-row h1{font-size:31px;line-height:1.2}
+.pdf-project .pdf-project-summary{font-size:13px;margin:5px 0 6px}
+.pdf-project .pdf-project-links{margin-top:7px;gap:14px}
+.pdf-project .pdf-project-links a{font-size:10px;color:#555}
+.pdf-project .detail-keyline{margin:0;grid-template-columns:1fr 1fr;gap:14px}
+.pdf-project .detail-keyline>div{padding:9px 12px;border-left:2px solid #9a765c;background:#f5f3f0}
+.pdf-project .detail-keyline span{display:block;margin:0 0 4px;color:#777;font-size:9px;line-height:1.2;letter-spacing:.08em}
+.pdf-project .detail-keyline strong{font-size:12px;line-height:1.5}
+.pdf-detail-layout{display:grid;grid-template-columns:390px minmax(0,1fr);gap:24px;align-items:start;min-height:0}
+.pdf-detail-content{display:flex;flex-direction:column;gap:14px;min-width:0}
+.pdf-project .detail-section{padding:0;border:0;margin:0;min-width:0}
+.pdf-project .detail-section-head{margin:0 0 8px}
+.pdf-project .detail-section-head .eyebrow{font-size:8px;margin:0 0 2px;line-height:1.3;letter-spacing:.1em}
+.pdf-project .detail-section-head h2{font-size:17px;line-height:1.3;margin:0;letter-spacing:-.025em}
+.pdf-project .contribution-cards{grid-template-columns:repeat(3,minmax(0,1fr));border-block:1px solid #222}
+.pdf-project .contribution-card,.pdf-project .contribution-card:first-child,.pdf-project .contribution-card:last-child{padding:9px 10px;min-width:0;min-height:0}
+.pdf-project .contribution-card:first-child{padding-left:0}
+.pdf-project .contribution-card:last-child{padding-right:0}
+.pdf-project .contribution-card .card-number{font-size:8px;line-height:1.2;margin-bottom:6px;color:#888}
+.pdf-project .contribution-card h3{font-size:12px;line-height:1.35;margin:0;letter-spacing:-.02em}
+.pdf-project .contribution-card ul{margin:7px 0 0;padding:7px 0 0 13px;font-size:10px;line-height:1.55}
+.pdf-project .contribution-card li+li{margin-top:3px}
+.pdf-project .flow-layout{display:block;margin:0}
+.pdf-project .detail-flow{grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0}
+.pdf-project .detail-flow li{min-height:0;padding:7px 6px;background:#fff}
+.pdf-project .detail-flow li:not(:last-child)::after{content:'→';right:-9px;top:50%;bottom:auto;translate:0 -50%;font-size:9px}
+.pdf-project .detail-flow span{font-size:8px;line-height:1;margin:0 0 6px;white-space:nowrap}
+.pdf-project .detail-flow strong{font-size:10px;line-height:1.35;word-break:normal;overflow-wrap:normal}
+.pdf-project .detail-flow p{margin:4px 0 0;font-size:9px;line-height:1.45;color:#777}
+.pdf-project .problem-grid{display:block}
+.pdf-project .problem-card{padding:10px 12px;border:1px solid #222;background:white}
+.pdf-project .problem-card h3{font-size:14px;line-height:1.4;margin:0;letter-spacing:-.025em}
+.pdf-project .problem-steps{grid-template-columns:1fr 1.35fr 1fr;margin-top:8px}
+.pdf-project .problem-steps>div{padding:8px 8px 0 0}
+.pdf-project .problem-steps>div+div{padding-left:8px;border-left:1px solid #ddd;border-top:0}
+.pdf-project .problem-steps span{font-size:8px;margin:0 0 4px;line-height:1.2}
+.pdf-project .problem-steps p{font-size:10.5px;line-height:1.55;color:#444;margin:0}
+.pdf-project .limitations-card{grid-template-columns:77px minmax(0,1fr);gap:8px;margin:0;padding:8px 10px;background:#f5f3f0}
+.pdf-project .limitations-card span{font-size:8px;line-height:1.4;padding:0}
+.pdf-project .limitations-card p{font-size:10px;line-height:1.5;margin:0}
+.pdf-project .detail-evidence-gallery,.pdf-project .detail-gallery{display:grid;grid-template-columns:1fr;gap:12px;margin:0}
+.pdf-project .detail-evidence-gallery figure{display:block;margin:0;border:1px solid #ddd}
+.pdf-project .detail-evidence-gallery img{display:block;width:100%;height:172px;min-height:0;padding:7px;object-fit:contain;filter:none;background:#f2f2f2}
+.pdf-project .detail-evidence-gallery figcaption{padding:8px 10px;border-top:1px solid #ddd}
+.pdf-project .detail-evidence-gallery figcaption span{font-size:8px;line-height:1.3;margin:0 0 3px}
+.pdf-project .detail-evidence-gallery figcaption strong{font-size:12px;line-height:1.4}
+.pdf-project .detail-evidence-gallery figcaption p{font-size:10px;line-height:1.45;margin:3px 0 0}
+/* Keep all tracking panels and the same deliberate crops as the website. */
+.pdf-project .tracking-figure{margin:0;border:1px solid #ddd}
+.pdf-project .tracking-figure-head{padding:7px 9px;min-height:0}
+.pdf-project .tracking-figure-head span{font-size:8px}
+.pdf-project .tracking-figure-head strong{font-size:12px}
+.pdf-project .tracking-visual-grid{gap:6px;padding:6px}
+.pdf-project .tracking-status-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.pdf-project .tracking-distance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.pdf-project .tracking-media{aspect-ratio:4/3}
+.pdf-project .tracking-panel-copy{display:block;padding:5px 6px;min-height:0}
+.pdf-project .tracking-panel-copy strong{display:block;font-size:10px;margin:0 0 2px}
+.pdf-project .tracking-panel-copy span,.pdf-project .tracking-distance-grid .tracking-panel-copy span{font-size:8.5px;line-height:1.4}
+.pdf-project .tracking-figure>figcaption{padding:5px 9px;font-size:9px;line-height:1.4;color:#666}
+/* Portrait project pages follow the website's full section order. */
+.pdf-project{width:210mm;height:297mm;padding:9mm 12mm 7mm}
+.pdf-project .pdf-body{gap:9px;padding:8px 0}
+.pdf-project .pdf-title-row h1{font-size:29px}
+.pdf-project .pdf-metadata{gap:12px}
+.pdf-project .pdf-meta{font-size:11px;white-space:nowrap}
+.pdf-project .pdf-tags{gap:4px}
+.pdf-project .pdf-tags li{font-size:9px;padding:3px 6px}
+.pdf-project .detail-keyline strong{font-size:12px;line-height:1.5}
+.pdf-project .detail-section{border-top:1px solid #ddd;padding-top:7px}
+.pdf-project .detail-section-head{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+.pdf-project .detail-section-head .eyebrow{margin:0;font-size:8px}
+.pdf-project .detail-section-head h2{font-size:18px}
+.pdf-project .contribution-card h3{font-size:13px}
+.pdf-project .contribution-card ul{font-size:11.5px;line-height:1.5}
+.pdf-project .detail-evidence-gallery,.pdf-project .detail-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.pdf-project .detail-evidence-gallery img{height:140px;object-fit:contain}
+.pdf-project .detail-evidence-gallery figcaption{padding:7px 9px}
+.pdf-project .detail-evidence-gallery figcaption p{font-size:10.5px}
+.pdf-project .detail-flow li{padding:8px;min-height:0}
+.pdf-project .detail-flow strong{font-size:11px}
+.pdf-project .detail-flow p{font-size:10px}
+.pdf-project .problem-card{padding:10px 12px}
+.pdf-project .problem-card h3{font-size:15px}
+.pdf-project .problem-steps p{font-size:11.5px;line-height:1.5}
+.pdf-project .limitations-card p{font-size:11px;line-height:1.5}
+.pdf-project .pdf-continuation-title{font-size:26px;margin:0 0 4px}
+.pdf-project .tracking-visual-grid{gap:3px;padding:4px}
+.pdf-project .tracking-panel-copy{padding:4px}
+.pdf-project .tracking-panel-copy span,.pdf-project .tracking-distance-grid .tracking-panel-copy span{font-size:8px;line-height:1.4}
+.pdf-project.tracking-page .detail-gallery{grid-template-columns:repeat(2,minmax(0,1fr));align-items:center}
+.pdf-project .tracking-figure{align-self:center;border-radius:0;background:#fff}
+.pdf-project .tracking-figure>figcaption{flex:none;background:#fff}
+.pdf-project .tracking-status-grid .tracking-panel-copy{display:flex;align-items:baseline;justify-content:space-between;gap:3px}
+.pdf-project .tracking-status-grid .tracking-panel-copy strong{margin:0}
+.pdf-project .tracking-status-grid .tracking-panel-copy span{font-size:7.5px;white-space:nowrap}
 /* Profile: large portrait with an editorial text column, matching the website. */
 .pdf-profile .pdf-body{gap:40px;padding-top:24px}
 .pdf-profile-hero{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:65px;align-items:start}
@@ -53,6 +168,7 @@
 .pdf-body .pdf-name-en{font-size:16px;color:#888;margin-bottom:6px}
 .pdf-body .pdf-position{font-size:25px;line-height:1.4;font-weight:600;color:#111}
 .pdf-body .pdf-description{font-size:16px;line-height:1.85;margin:19px 0 21px;max-width:650px}
+.pdf-description p+p{margin-top:7px}
 .pdf-facts{display:grid;grid-template-columns:1fr 1fr;gap:13px 24px;margin:0}
 .pdf-facts>div{border-top:1px solid #d8d8d8;padding-top:9px}
 .pdf-facts dt{font-size:10px;color:#999;letter-spacing:.08em;margin-bottom:4px}
@@ -67,6 +183,28 @@
 .pdf-skill h2{font-size:14px;letter-spacing:-.015em;color:#fff;margin-bottom:13px;white-space:nowrap}
 .pdf-skill p{font-size:11px;line-height:1.7;color:#ddd;flex:1}
 .pdf-skill .pdf-skill-context{font-size:10px;flex:0;margin-top:12px;padding-top:8px;border-top:1px solid #555;color:#999}
+/* The same profile content, arranged in portrait with the photo on the left. */
+.pdf-profile{width:210mm;height:297mm;padding:9mm 12mm 7mm}
+.pdf-profile .pdf-body{gap:22px;padding-top:24px}
+.pdf-profile-hero{grid-template-columns:245px minmax(0,1fr);gap:28px;flex:none}
+.pdf-portrait{grid-column:1;grid-row:1}
+.pdf-intro-copy{grid-column:2;grid-row:1;min-width:0}
+.pdf-portrait img{width:245px;height:318px}
+.pdf-intro-copy h1{font-size:64px;margin:14px 0 6px}
+.pdf-body .pdf-name-en{font-size:16px;margin-bottom:12px}
+.pdf-body .pdf-position{font-size:23px;line-height:1.45}
+.pdf-body .pdf-description{font-size:16px;line-height:1.8;margin:20px 0 0}
+.pdf-description p+p{margin-top:10px}
+.pdf-facts{gap:16px 28px;flex:none}
+.pdf-facts dt{font-size:11px;margin-bottom:6px}
+.pdf-facts dd{font-size:15px;line-height:1.6}
+.pdf-skills{grid-template-columns:repeat(2,minmax(0,1fr));flex:1;min-height:0}
+.pdf-skill{padding:24px 22px;border-bottom:1px solid #444}
+.pdf-skill:nth-child(2){border-right:0}
+.pdf-skill:nth-child(3),.pdf-skill:nth-child(4){border-bottom:0}
+.pdf-skill h2{font-size:18px}
+.pdf-skill p{font-size:15px;line-height:1.75}
+.pdf-skill .pdf-skill-context{font-size:12px;line-height:1.7}
 @media print{
   html,body.print-view{margin:0;padding:0;background:#fff;print-color-adjust:exact;-webkit-print-color-adjust:exact}
   .print-toolbar,.print-help,noscript{display:none!important}

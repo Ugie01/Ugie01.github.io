@@ -1,8 +1,12 @@
-/* PDF summaries read live website content; no separate project copy is maintained. */
+/* PDF pages reuse the website's complete project sections and image layouts. */
 (() => {
   const pages = document.querySelector('#print-pages');
   const status = document.querySelector('#print-status');
   const save = document.querySelector('#save-pdf');
+  if (location.protocol === 'file:') {
+    location.replace('http://127.0.0.1:4173/print.html');
+    return;
+  }
   const root = new URL('./', location.href);
   const revision = Date.now().toString();
   const node = (tag, cls, text) => {
@@ -53,13 +57,17 @@
     const body = sheet('PROFILE / SKILLS', 'pdf-profile');
     const hero = node('div', 'pdf-profile-hero');
     const intro = node('section', 'pdf-intro-copy');
+    const description = node('div', 'pdf-description');
+    const descriptionLines = [...home.querySelectorAll('.hero-description span')];
+    (descriptionLines.length ? descriptionLines : [home.querySelector('.hero-description')]).forEach(line => {
+      description.append(node('p', '', line.textContent.trim()));
+    });
     intro.append(node('p', 'pdf-kicker', text(home, '.hero .eyebrow')),
       node('h1', '', text(home, '.hero h1')),
       node('p', 'pdf-name-en', text(home, '.hero-name-en')),
       node('p', 'pdf-position', text(home, '.hero-position')),
-      node('p', 'pdf-description', text(home, '.hero-description')));
+      description);
     const facts = copy(home.querySelector('.profile-facts'), 'pdf-facts');
-    intro.append(facts);
     const portrait = node('figure', 'pdf-portrait');
     portrait.append(copy(home.querySelector('.hero-portrait img')));
     const github = node('a', 'pdf-profile-link', 'GitHub / Ugie01 ↗');
@@ -73,12 +81,13 @@
       [...group.querySelectorAll('p')].forEach(p => item.append(copy(p, p.classList.contains('skill-context') ? 'pdf-skill-context' : '')));
       skills.append(item);
     });
-    body.append(hero, skills);
+    body.append(hero, facts, skills);
   }
 
-  function project({card, doc, href}) {
+  function project({doc, href}) {
     const title = text(doc, 'h1');
-    const body = sheet(title, 'pdf-project');
+    const body = sheet(title, `pdf-project detail-redesign detail-compact${doc.body.classList.contains('tracking-page') ? ' tracking-page' : ''}`);
+    body.dataset.source = href;
     const heading = node('header', 'pdf-project-heading');
     const titleRow = node('div', 'pdf-title-row');
     titleRow.append(node('h1', '', title), node('span', 'pdf-status', text(doc, '.status')));
@@ -86,53 +95,30 @@
     const tags = copy(doc.querySelector('.tags'), 'pdf-tags');
     const metadata = node('div', 'pdf-metadata');
     metadata.append(meta, tags);
-    heading.append(node('p', 'pdf-kicker', text(doc, '.detail-header .eyebrow')), titleRow,
+    heading.append(node('p', 'pdf-kicker', text(doc, '.detail-hero .eyebrow') || text(doc, '.detail-header .eyebrow')), titleRow,
       node('p', 'pdf-project-summary', text(doc, '.detail-summary')), metadata);
 
-    const layout = node('div', 'pdf-project-layout');
-    const visual = node('section', 'pdf-visual-column');
-    const figure = node('figure', 'pdf-project-image');
-    const image = copy(card.querySelector('img'));
-    figure.append(image, node('figcaption', '', image.alt));
-    const flow = node('section', 'pdf-flow-section');
-    const sourceFlow = doc.querySelector('.system-flow');
-    if (sourceFlow) {
-      flow.append(node('h2', '', text(sourceFlow.parentElement, 'h2')), copy(sourceFlow, 'pdf-flow'));
-    }
     const links = node('div', 'pdf-project-links');
     const web = node('a', '', '프로젝트 상세 ↗');
     web.href = new URL(new URL(href).pathname, 'https://ugie01.github.io').href;
     links.append(web);
     doc.querySelectorAll('.detail-actions a').forEach(link => links.append(copy(link, '')));
-    visual.append(figure, flow, links);
+    heading.append(links);
 
-    const content = node('div', 'pdf-content-column');
-    const role = node('section', 'pdf-role');
-    role.append(node('p', 'pdf-kicker', 'MY ROLE'), node('strong', '', text(doc, '.role-callout strong')));
-    const work = node('section', 'pdf-work');
-    work.append(node('h2', '', text(doc, '.detail-main .subheading')));
-    const list = node('ul', 'pdf-implementation');
-    // Select complete existing bullets, never invent or truncate a sentence.
-    [...doc.querySelectorAll('.implementation-list li')].slice(0, 4).forEach(li => list.append(copy(li)));
-    work.append(list);
-    const result = node('section', 'pdf-result');
-    result.append(node('h2', '', '확인 결과와 한계'),
-      node('strong', '', text(doc, '.detail-result strong')));
-    const limitation = doc.querySelector('.case-grid .limitation');
-    if (limitation) result.append(copy(limitation, 'pdf-limitation'));
-    content.append(role, work, result);
-    layout.append(visual, content);
-    body.append(heading, layout);
+    // Clone whole sections, including every bullet, caption and problem-solving step.
+    // The main-page cover is intentionally not part of a project detail sheet.
+    body.append(heading, copy(doc.querySelector('.detail-keyline')));
+    doc.querySelectorAll('.project-detail > .detail-section, .project-detail > .limitations-card')
+      .forEach(section => body.append(copy(section)));
   }
 
   function overflows(body) {
     const bounds = body.getBoundingClientRect();
-    return [...body.querySelectorAll('.pdf-project-layout, .pdf-skills, .pdf-result, .pdf-project-links')]
+    return [...body.children]
       .some(el => el.getBoundingClientRect().bottom > bounds.bottom + 1);
   }
 
   async function build() {
-    if (location.protocol === 'file:') throw new Error('웹 포트폴리오에서 PDF로 저장을 눌러 주세요.');
     const home = await readPage(new URL('index.html', root));
     const cards = [...home.querySelectorAll('.featured, .project-card')];
     const projects = await Promise.all(cards.map(async card => {
@@ -143,17 +129,35 @@
     projects.forEach(project);
     await document.fonts.ready;
     await Promise.all([...pages.querySelectorAll('img')].map(img => img.decode()));
+    // Preserve every section if future website copy grows: continue on another sheet.
+    for (const page of [...pages.querySelectorAll('.pdf-project')]) {
+      let current = page;
+      while (overflows(current.querySelector('.pdf-body'))) {
+        const body = current.querySelector('.pdf-body');
+        const sections = [...body.children].filter(el => el.matches('.detail-section, .limitations-card'));
+        if (sections.length < 2) throw new Error(`${text(page, '.pdf-running-head span')}: 인쇄 영역을 확인해 주세요.`);
+        const nextBody = sheet(text(page, '.pdf-running-head span'), page.className.replace('pdf-sheet ', ''));
+        nextBody.dataset.source = body.dataset.source;
+        nextBody.append(node('h1', 'pdf-continuation-title', text(page, '.pdf-title-row h1') || text(page, '.pdf-running-head span')));
+        const moved = [];
+        while (overflows(body) && sections.length > 1) {
+          const section = sections.pop();
+          section.remove();
+          moved.unshift(section);
+        }
+        nextBody.append(...moved);
+        current.after(nextBody.closest('.pdf-sheet'));
+        current = nextBody.closest('.pdf-sheet');
+      }
+    }
     const sheets = [...pages.querySelectorAll('.pdf-sheet')];
     for (const [index, page] of sheets.entries()) {
       const body = page.querySelector('.pdf-body');
-      const list = page.querySelector('.pdf-implementation');
-      // Future longer copy still gets one project per sheet: omit whole trailing bullets only.
-      while (overflows(body) && list?.children.length > 2) list.lastElementChild.remove();
-      if (overflows(body)) throw new Error(`${page.querySelector('.pdf-running-head span').textContent}: 요약 분량이 한 페이지를 넘습니다.`);
+      if (overflows(body)) throw new Error(`${page.querySelector('.pdf-running-head span').textContent}: 프로젝트 내용이 인쇄 영역을 넘습니다.`);
       page.querySelector('.pdf-page-number').textContent = `${String(index + 1).padStart(2, '0')} / ${String(sheets.length).padStart(2, '0')}`;
     }
     document.documentElement.dataset.pdfReady = 'true';
-    status.textContent = `가로 A4 / 총 ${sheets.length}페이지 / 프로젝트별 1페이지`;
+    status.textContent = `세로 A4 / 총 ${sheets.length}페이지 / 웹 포트폴리오 내용 전체 반영`;
     save.disabled = false;
     save.addEventListener('click', () => window.print());
   }
