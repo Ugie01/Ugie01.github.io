@@ -4,7 +4,7 @@
 
 | 프로젝트 | 대표 이미지 | 상세 이미지 1 | 상세 이미지 2 |
 | --- | --- | --- | --- |
-| AX Logistics Multi Robot | `fms-cover.png` 관제 웹페이지 | `fms-map-robot.png` 실제 맵과 로봇 주행 | `fms-system.svg` 전체 관제, 로봇, 로봇팔 구조 |
+| AX Multi-Robot Logistics | `fms-cover.png` 관제 웹페이지 | `fms-map-robot.png` 실제 맵과 로봇 주행 | `fms-system.svg` 전체 관제, 로봇, 로봇팔 구조 |
 | GoSung | `gosung-cover.jpg` 완성된 로봇 | `gosung-sensor-fusion.webp` 센서 융합 | `gosung-ramp-stop.jpg` 경사로 정지 시험 |
 | AIMing Project | `aiming-cover.webp` 시연 영상 프레임 | `aiming-blue-noise.webp` 청색 노이즈 | `aiming-lock-on.jpg` Lock-On |
 | Tracking Patrol Robot | `tracking-cover.webp` 시연 화면 | `tracking-normal.webp`, `tracking-danger.png`, `tracking-fall.png` 정상, 위험, 낙상 3분할 | `tracking-distance.png` 거리 유지 |

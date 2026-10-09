@@ -10,7 +10,7 @@
 
 | 페이지 | 접속 링크 |
 | --- | --- |
-| AX Logistics Multi Robot | [프로젝트 보기](https://ugie01.github.io/projects/fms.html) |
+| AX Multi-Robot Logistics | [프로젝트 보기](https://ugie01.github.io/projects/fms.html) |
 | GoSung | [프로젝트 보기](https://ugie01.github.io/projects/gosung.html) |
 | AIMing Project | [프로젝트 보기](https://ugie01.github.io/projects/aiming.html) |
 | Tracking Patrol Robot | [프로젝트 보기](https://ugie01.github.io/projects/tracking.html) |
