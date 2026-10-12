@@ -161,6 +161,12 @@
 .pdf-project .tracking-status-grid .tracking-panel-copy{display:flex;align-items:baseline;justify-content:space-between;gap:3px}
 .pdf-project .tracking-status-grid .tracking-panel-copy strong{margin:0}
 .pdf-project .tracking-status-grid .tracking-panel-copy span{font-size:7.5px;white-space:nowrap}
+/* Keep the updated AX summary on one portrait sheet without shrinking its text. */
+.pdf-project.pdf-project-ax .pdf-body{gap:6px}
+.pdf-project.pdf-project-ax .detail-section{padding-top:5px}
+.pdf-project.pdf-project-ax .detail-evidence-gallery img{height:116px}
+.pdf-project.pdf-project-ax .detail-evidence-gallery figcaption{padding:5px 8px}
+.pdf-project.pdf-project-ax .contribution-card ul{line-height:1.4}
 /* Profile: large portrait with an editorial text column, matching the website. */
 .pdf-profile .pdf-body{gap:40px;padding-top:24px}
 .pdf-profile-hero{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:65px;align-items:start}

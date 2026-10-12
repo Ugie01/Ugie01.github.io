@@ -86,7 +86,7 @@
 
   function project({doc, href}) {
     const title = text(doc, 'h1');
-    const body = sheet(title, `pdf-project detail-redesign detail-compact${doc.body.classList.contains('tracking-page') ? ' tracking-page' : ''}`);
+    const body = sheet(title, `pdf-project detail-redesign detail-compact${new URL(href).pathname.endsWith('/fms.html') ? ' pdf-project-ax' : ''}${doc.body.classList.contains('tracking-page') ? ' tracking-page' : ''}`);
     body.dataset.source = href;
     const heading = node('header', 'pdf-project-heading');
     const titleRow = node('div', 'pdf-title-row');

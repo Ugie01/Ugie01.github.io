@@ -8,9 +8,9 @@
     "period": "2026.09 ~ 진행 중",
     "team": "7명",
     "type": "robot",
-    "summary": "Zenoh와 MQTT로 로봇 3대와 로봇팔 작업을 연결한 ROS 2 물류 관제 시스템",
-    "role": "FMS 백엔드와 다중 로봇 통신, 주행, 작업 시퀀스 통합",
-    "overview": "ROS 2 Jazzy 기반 로봇 3대와 OMX 로봇팔의 상태를 관제하고 주문 작업을 이어 주는 7인 팀 프로젝트입니다. 로봇과 FMS는 Zenoh, 로봇팔과 FMS는 MQTT로 통신합니다. 실제 로봇 주행과 시뮬레이션 모드를 분리하고, 주문부터 Pickup과 Workstation까지의 흐름을 통합하고 있습니다.",
+    "summary": "주문부터 Pickup, Workstation까지 AMR과 OMX 작업을 연결하는 물류 관제 시스템",
+    "role": "FMS 백엔드, Zenoh 통신, ROS 2/Nav2 주행 및 작업 시나리오 연동",
+    "overview": "7인 팀이 AMR과 OMX 로봇팔을 연결하는 물류 관제 시스템을 개발하고 있습니다. FMS와 로봇은 Zenoh, FMS와 OMX는 MQTT로 통신합니다. 저는 백엔드와 통신 구성, 경로 주행 및 작업 단계 간 연동을 담당했습니다.",
     "stack": [
       "ROS 2 Jazzy",
       "Zenoh",
@@ -19,44 +19,44 @@
       "FastAPI"
     ],
     "implementation": [
-      "로봇 3대에 동일한 실행 환경을 구성하고 namespace 인자로 구분; 로컬 DDS와 Zenoh Bridge와 Router 연결 관리",
-      "FMS 백엔드에서 로봇과 OMX 객체별 연결 상태와 명령을 관리하고 실기와 시뮬레이션 모드 분리",
-      "Route Graph 경로를 Nav2 FollowWaypoints로 전달하고 주행 상태, 경로 재생성, 정지, 비상정지 제어",
-      "Pickup, Workstation, 충전 노드별 최종 Yaw를 지정하고 일반 이동과 충전과 자동 도킹 명령 분리",
-      "주문 → Pickup 이동 → ArUco 정렬 → MQTT OMX 작업 명령으로 이어지는 시퀀스와 예외 흐름 통합",
-      "Chrony로 Main PC와 로봇 시각을 맞추고 LiDAR Scan 지연을 점검해 source_timeout을 0.2초에서 0.5초로 조정"
+      "Zenoh Router, ROS2DDS Bridge, Namespace, 로컬 DDS 및 Allow 필터로 로봇별 통신 환경 구성",
+      "FastAPI와 ROS 2 Topic, Action을 연결하고 로봇 위치, 배터리, 주행 상태 및 제어 명령 연동",
+      "GeoJSON Route Graph 작성 및 Nav2 NavigateThroughPoses Action 연동, Behavior Tree와 파라미터 수정",
+      "주문, Pickup, ArUco Action 결과, MQTT/OMX 작업 명령, Workstation 흐름을 단계별로 연결",
+      "정지, 충전소 이동, 도킹 기능 연동 및 실로봇과 시뮬레이션 모드 분리",
+      "TurtleBot3 3대 실행 환경과 Docker Compose 통합 실행 환경을 구성하고 통신 및 주행 오류 분석"
     ],
     "external": "경로 탐색, ArUco 정렬, 로봇팔 기능을 FMS 백엔드의 주행과 작업 시퀀스에 연결하고, 로봇과 로봇팔의 통신 환경을 구성했습니다. 제 담당 범위는 백엔드와 실기 통합입니다.",
-    "problem": "실환경에서 LiDAR Scan 지연, 특수 노드 도착 방향 오류, 일반 이동 중 불필요한 자동 도킹이 발생했습니다.",
-    "decision": "Main PC 기준 Chrony 동기화와 source_timeout 조정으로 지연을 완화했습니다. 특수 노드에 고정 Yaw를 넣고, 충전 명령과 저전력 자동 복귀에만 도킹이 실행되도록 조건을 분리했습니다.",
-    "result": "로봇의 작업 지점 정지 방향과 충전 조건을 명확히 하고, Pickup 도착부터 ArUco 정렬과 MQTT 로봇팔 명령까지 하나의 작업 흐름으로 연결했습니다.",
-    "limitation": "실환경 작업 흐름을 통합 중인 프로젝트입니다.",
+    "problem": "실로봇 주행 중 LiDAR Scan 지연으로 Nav2 센서 처리 경고가 발생했습니다.",
+    "decision": "Main PC와 로봇의 시간 차이를 분석하고 LiDAR 수신 상태를 확인해 source timeout을 조정했습니다.",
+    "result": "TurtleBot3 3대의 통신과 경로 주행을 시험하고, Pickup 도착 후 ArUco Action과 MQTT/OMX 작업 명령의 단계별 연동을 확인했습니다.",
+    "limitation": "전체 주문의 최종 완료까지는 검증 범위를 넓히는 중입니다.",
     "diagram": [
+      "주문",
       "FMS 백엔드",
-      "Zenoh / 로봇 3대",
-      "Pickup과 ArUco",
-      "MQTT / OMX"
+      "Zenoh / Nav2 / 로봇 3대",
+      "Pickup / ArUco / MQTT / OMX"
     ],
     "images": [
       {
         "src": "fms-map-robot.png",
-        "alt": "현재 모의 로봇 데이터로 표시한 관제 화면",
-        "caption": "실제 맵과 로봇 주행 이미지 교체 예정 (현재: 모의 관제 화면)"
+        "alt": "다중 로봇의 위치와 상태가 표시된 FMS 관제 화면",
+        "caption": "맵에서 로봇의 위치와 상태를 확인하는 관제 화면"
       },
       {
-        "src": "fms-system.svg",
-        "alt": "현재 GeoJSON 경로 그래프 시각화",
-        "caption": "전체 관제, 로봇, 로봇팔 구조 이미지 교체 예정 (현재: 경로 그래프)"
+        "src": "fms-featured-robots.jpg",
+        "alt": "물류 작업 공간에 배치된 AMR 3대와 OMX 4대",
+        "caption": "AMR 3대의 통신과 경로 주행을 시험한 작업 공간"
       }
     ],
     "github": "https://github.com/E1I6-Logistics/Logistics_FMS",
     "demo": "",
     "demoNote": "현재 개발 중",
     "source": "https://github.com/E1I6-Logistics/Logistics_FMS/blob/ugie-customize/backend/app/ros2/ros_gateway.py",
-    "highlight": "로봇 3대 주행과 Pickup → ArUco → OMX 작업 흐름 연동",
+    "highlight": "로봇 3대 통신과 주행 테스트, Pickup → ArUco → OMX 단계별 연동",
     "coverImage": {
-      "src": "fms-cover.png",
-      "alt": "모의 로봇 데이터로 표시한 FMS 관제 웹페이지 화면"
+      "src": "fms-operation-wide.jpg",
+      "alt": "물류 작업 공간에 배치된 이동 로봇 3대와 로봇팔"
     }
   },
   {
