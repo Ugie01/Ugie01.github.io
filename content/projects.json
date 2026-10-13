@@ -15,8 +15,7 @@
       "ROS 2 Jazzy",
       "Zenoh",
       "MQTT",
-      "Nav2",
-      "FastAPI"
+      "Nav2"
     ],
     "implementation": [
       "Zenoh Router, ROS2DDS Bridge, Namespace, 로컬 DDS 및 Allow 필터로 로봇별 통신 환경 구성",

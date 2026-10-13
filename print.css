@@ -1,5 +1,5 @@
-/* Landscape portfolio: one profile sheet and one summary sheet per project. */
-@page{size:A4 landscape;margin:0}
+/* A4 portrait throughout, including browsers that ignore named-page rules. */
+@page{size:A4 portrait;margin:0}
 @page profile{size:A4 portrait;margin:0}
 @page project{size:A4 portrait;margin:0}
 .pdf-profile{page:profile}
