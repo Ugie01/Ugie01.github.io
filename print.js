@@ -112,7 +112,7 @@
       section.querySelectorAll('.contribution-card ul').forEach(list => {
         [...list.children].slice(2).forEach(item => item.remove());
       });
-      section.querySelectorAll('.detail-evidence-gallery figcaption p, .detail-flow li p').forEach(detail => detail.remove());
+      section.querySelectorAll('.detail-evidence-gallery figcaption p').forEach(detail => detail.remove());
       if (doc.body.classList.contains('tracking-page')) {
         section.querySelectorAll('.tracking-distance-grid .tracking-panel-copy span').forEach(detail => detail.remove());
       }
