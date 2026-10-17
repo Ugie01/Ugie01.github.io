@@ -194,9 +194,528 @@
 .pdf-skill h2{font-size:18px}
 .pdf-skill p{font-size:15px;line-height:1.75}
 .pdf-skill .pdf-skill-context{font-size:12px;line-height:1.7}
+
+/* =========================================================
+   A4 portrait / exactly one sheet per project (7 total)
+   Only PDF preview; original website layout stays unchanged.
+   ========================================================= */
+.pdf-project .pdf-body { gap: 7px; padding: 7px 0; }
+.pdf-project .detail-section { padding-top: 6px; }
+.pdf-project .detail-section-head { margin-bottom: 6px; }
+.pdf-project .detail-evidence-gallery,
+.pdf-project .detail-gallery { gap: 9px; }
+.pdf-project .detail-evidence-gallery img {
+  height: var(--pdf-image-height, 182px);
+  padding: 5px;
+  object-fit: contain;
+}
+.pdf-project .detail-evidence-gallery figcaption { padding: 6px 8px; }
+.pdf-project .detail-evidence-gallery figcaption strong { font-size: 11.5px; }
+.pdf-project .detail-evidence-gallery figcaption span { margin: 0 0 2px; }
+.pdf-project .detail-flow li { padding: 6px; }
+.pdf-project .detail-section-head h2 { font-size: 17px; }
+.pdf-project .problem-card { padding: 8px 10px; }
+.pdf-project .problem-card h3 { font-size: 14px; }
+.pdf-project .problem-steps > div { padding-top: 6px; }
+.pdf-project .limitations-card { padding: 6px 9px; }
+
+/* The app screenshot is tall, the obstacle demo nearly square. */
+.pdf-project .vip-evidence-gallery {
+  grid-template-columns: minmax(0, 36fr) minmax(0, 64fr);
+}
+.pdf-project .vip-evidence-gallery img {
+  height: var(--pdf-image-height, 218px);
+  object-fit: contain;
+}
+
+/* Keep Tracking's five images in ONE page:
+   one row of three situations, one row of two distance examples. */
+.pdf-project.tracking-page .detail-gallery {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 7px;
+  align-items: stretch;
+}
+.pdf-project.tracking-page .tracking-figure-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  height: auto;
+  min-height: 18px;
+  padding: 1px 8px;
+}
+.pdf-project.tracking-page .tracking-figure-head span { font-size: 8px; }
+.pdf-project.tracking-page .tracking-figure-head strong { font-size: 12px; }
+.pdf-project.tracking-page .tracking-visual-grid { gap: 4px; padding: 3px; }
+.pdf-project.tracking-page .contribution-card ul { font-size: 10.5px; line-height: 1.4; }
+.pdf-project.tracking-page .problem-steps p { font-size: 10.5px; line-height: 1.45; }
+.pdf-project.tracking-page .tracking-media {
+  height: var(--pdf-tracking-image-height, 100px);
+  background: #f0f0f0;
+  aspect-ratio: auto;
+}
+.pdf-project.tracking-page .tracking-media img {
+  width: 100%; height: 100%; object-fit: contain;
+}
+.pdf-project.tracking-page .tracking-panel-copy,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy {
+  height: 19px; min-height: 19px; padding: 2px 6px;
+}
+.pdf-project.tracking-page .tracking-panel-copy strong { font-size: 10px; }
+.pdf-project.tracking-page .tracking-panel-copy span,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy span {
+  font-size: 8px; line-height: 1.25; white-space: normal;
+}
+.pdf-project.tracking-page .tracking-figure > figcaption {
+  height: 17px; min-height: 17px;
+  padding: 2px 8px; font-size: 8px; line-height: 1.2;
+}
+/* Applied only when the expanded tracking layout physically cannot fit. */
+.pdf-project.tracking-page.pdf-tracking-fallback .detail-gallery {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.pdf-project.tracking-page.pdf-tracking-fallback .tracking-media {
+  height: var(--pdf-tracking-image-height, 88px);
+}
+.pdf-project.pdf-density-compact .pdf-body { gap: 5px; padding: 5px 0; }
+.pdf-project.pdf-density-compact .detail-section { padding-top: 4px; }
+.pdf-project.pdf-density-compact .detail-section-head { margin-bottom: 4px; }
+.pdf-project.pdf-density-compact .detail-keyline > div { padding: 6px 9px; }
+.pdf-project.pdf-density-compact .contribution-card,
+.pdf-project.pdf-density-compact .contribution-card:first-child,
+.pdf-project.pdf-density-compact .contribution-card:last-child { padding-top: 6px; padding-bottom: 6px; }
+.pdf-project.pdf-density-compact .contribution-card ul { margin-top: 5px; padding-top: 5px; }
+.pdf-project.pdf-density-compact .problem-steps p { font-size: 10px; }
+
+
+/* =========================================================
+   Centered evidence layouts: Tracking and VIP only.
+   Keep the web page unchanged and preserve all project images.
+   ========================================================= */
+/* Tracking: no need for full-bleed gray media bars. */
+.pdf-project.tracking-page .detail-gallery {
+  width: min(100%, 630px);
+  margin-inline: auto;
+}
+.pdf-project.tracking-page .tracking-figure {
+  background: #fff;
+}
+.pdf-project.tracking-page .tracking-status-grid,
+.pdf-project.tracking-page .tracking-distance-grid {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 7px;
+  padding: 5px 7px;
+  background: #fff;
+}
+.pdf-project.tracking-page .tracking-status-grid .tracking-panel {
+  flex: 0 1 175px;
+}
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel {
+  flex: 0 1 210px;
+}
+.pdf-project.tracking-page .tracking-media {
+  background: #fff;
+}
+.pdf-project.tracking-page .tracking-media img {
+  object-fit: contain;
+}
+.pdf-project.tracking-page .tracking-panel {
+  border-color: #d9d9d9;
+}
+/* VIP: keep the 36:64 grouping but avoid extra-wide photo frames. */
+.pdf-project .vip-evidence-gallery {
+  width: min(100%, 605px);
+  margin-inline: auto;
+  grid-template-columns: minmax(0, 36fr) minmax(0, 64fr);
+  column-gap: 20px;
+}
+.pdf-project .vip-evidence-gallery figure,
+.pdf-project .vip-evidence-gallery img {
+  background: #fafafa;
+}
+
 @media print{
   html,body.print-view{margin:0;padding:0;background:#fff;print-color-adjust:exact;-webkit-print-color-adjust:exact}
   .print-toolbar,.print-help,noscript{display:none!important}
   .pdf-sheet{margin:0;box-shadow:none;break-after:page;break-inside:avoid}
   .pdf-sheet:last-child{break-after:auto}
+}
+
+/* Print is available only after all seven pages are fully generated. */
+.print-toolbar #save-pdf:disabled { opacity: .48; cursor: wait; }
+
+
+/* =========================================================
+   Tracking PDF only: labels ABOVE their photos, not below.
+   Natural photo proportions are preserved. Other projects
+   and original website layouts are unaffected.
+   ========================================================= */
+.pdf-project.tracking-page .tracking-panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-color: #d8d8d8;
+}
+.pdf-project.tracking-page .tracking-panel-copy,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy {
+  order: -1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  min-height: 18px;
+  height: 18px;
+  padding: 1px 6px;
+  margin: 0;
+  border-top: 0;
+  border-bottom: 1px solid #e0e0e0;
+  background: #fff;
+  line-height: 1.2;
+}
+.pdf-project.tracking-page .tracking-panel-copy strong,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy strong {
+  display: inline;
+  font-size: 10px;
+  margin: 0;
+  line-height: 1.2;
+}
+.pdf-project.tracking-page .tracking-panel-copy span,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy span {
+  display: inline;
+  font-size: 8px;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+.pdf-project.tracking-page .tracking-media {
+  order: 0;
+  height: var(--pdf-tracking-image-height, 125px);
+  background: #fff;
+}
+.pdf-project.tracking-page .tracking-distance-grid .tracking-media {
+  height: calc(var(--pdf-tracking-image-height, 125px) + 12px);
+}
+.pdf-project.tracking-page.pdf-tracking-fallback .tracking-media {
+  height: var(--pdf-tracking-image-height, 88px);
+}
+
+/* Pack the same five images more efficiently into the single A4 sheet. */
+.pdf-project.tracking-page .detail-gallery { gap: 5px; }
+.pdf-project.tracking-page .tracking-figure-head {
+  min-height: 24px;
+  height: 24px;
+  padding: 4px 7px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.pdf-project.tracking-page .tracking-status-grid,
+.pdf-project.tracking-page .tracking-distance-grid { padding-block: 2px; }
+.pdf-project.tracking-page .tracking-panel-copy,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy {
+  min-height: 16px;
+  height: 16px;
+}
+.pdf-project.tracking-page .tracking-figure > figcaption {
+  min-height: 18px;
+  height: 18px;
+  padding: 1px 7px;
+  font-size: 11.5px;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+}
+
+
+/* =========================================================
+   Tracking PDF: labels in a NARROW LEFT RAIL beside each photo.
+   The media is centered, never cropped.  This overrides the
+   earlier top-label rules only on the PDF Tracking page.
+   ========================================================= */
+.pdf-project.tracking-page .detail-gallery {
+  width: min(100%, 700px);
+  margin-inline: auto;
+  gap: 5px;
+}
+.pdf-project.tracking-page .tracking-status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  justify-content: stretch;
+  gap: 7px;
+  padding: 3px 5px;
+}
+.pdf-project.tracking-page .tracking-distance-grid {
+  display: flex;
+  justify-content: center;
+  gap: 9px;
+  padding: 3px 5px;
+}
+.pdf-project.tracking-page .tracking-status-grid .tracking-panel,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  align-items: stretch;
+  min-width: 0;
+  max-width: none;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid #d9d9d9;
+  background: #fff;
+}
+.pdf-project.tracking-page .tracking-status-grid .tracking-panel {
+  width: auto;
+  grid-template-columns: 54px minmax(0, 1fr);
+}
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel {
+  flex: 0 1 288px;
+  width: 288px;
+  grid-template-columns: 67px minmax(0, 1fr);
+}
+.pdf-project.tracking-page .tracking-panel-copy,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy {
+  order: -1;
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 0;
+  height: auto;
+  min-width: 0;
+  width: auto;
+  margin: 0;
+  padding: 4px 4px;
+  border: 0;
+  border-right: 1px solid #e1e1e1;
+  background: #fff;
+  text-align: center;
+  line-height: 1.2;
+  overflow: visible;
+}
+.pdf-project.tracking-page .tracking-panel-copy strong,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy strong {
+  display: block;
+  max-width: 100%;
+  margin: 0;
+  color: #111;
+  font-size: 10px;
+  font-weight: 750;
+  line-height: 1.28;
+  white-space: nowrap;
+}
+.pdf-project.tracking-page .tracking-panel-copy span,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy span {
+  display: block;
+  max-width: 100%;
+  margin: 0;
+  color: #666;
+  font-size: 7.1px;
+  letter-spacing: -.015em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.pdf-project.tracking-page .tracking-media,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-media,
+.pdf-project.tracking-page.pdf-tracking-fallback .tracking-media {
+  order: 0;
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  width: 100%;
+  height: var(--pdf-tracking-image-height, 145px);
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  background: #fff;
+  aspect-ratio: auto;
+}
+.pdf-project.tracking-page .tracking-distance-grid .tracking-media {
+  height: calc(var(--pdf-tracking-image-height, 145px) + 3px);
+}
+.pdf-project.tracking-page .tracking-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  padding: 0;
+  margin: 0;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* Tracking PDF - VIP 스타일의 간결한 이미지 영역 */
+
+/* 개별 카드 테두리 제거 */
+.pdf-project.tracking-page .tracking-status-grid .tracking-panel,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel {
+    border: none;
+    background: #f2f2f2;
+}
+
+/* 왼쪽 라벨: 중앙 정렬, 구분선 제거 */
+.pdf-project.tracking-page .tracking-panel-copy,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border: none;
+    border-right: none;
+    background: #f2f2f2;
+}
+
+/* 이미지 영역도 같은 배경으로 통일 */
+.pdf-project.tracking-page .tracking-media,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-media {
+    background: #f2f2f2;
+}
+
+/* 이미지가 잘리지 않도록 원본 비율 유지 */
+.pdf-project.tracking-page .tracking-media img {
+    object-fit: contain;
+    object-position: center;
+}
+
+/* Tracking PDF - 라벨 중앙 정렬 */
+.pdf-project.tracking-page .tracking-panel-copy,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4px 3px;
+    border: none;
+    background: #f2f2f2;
+}
+
+/* Tracking PDF - 사진과 배경 통일 */
+.pdf-project.tracking-page .tracking-panel,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel,
+.pdf-project.tracking-page .tracking-media,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-media {
+    background: #f2f2f2;
+    border: none;
+}
+
+/* 사진을 왼쪽 라벨 영역 바로 옆에 배치 */
+.pdf-project.tracking-page .tracking-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: left center;
+}
+
+/* ============================================================
+   FINAL: Tracking 사진 원본(1600x1200, 4:3)에 맞춘 카드 배치
+   - 중복된 이전 Tracking CSS는 변경하지 않고 마지막에 덮어씀
+   - 사진은 자르지 않음 / 왼쪽 라벨 가로, 세로 중앙
+   - Tracking PDF만 적용
+   ============================================================ */
+.pdf-project.tracking-page .tracking-status-grid,
+.pdf-project.tracking-page .tracking-distance-grid {
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 8px;
+    padding: 3px 0;
+    background: #fff;
+}
+.pdf-project.tracking-page .tracking-status-grid .tracking-panel,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 48px auto;
+    width: max-content;
+    max-width: 100%;
+    flex: none;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    overflow: visible;
+    background: #f2f2f2;
+}
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel {
+    grid-template-columns: 64px auto;
+}
+.pdf-project.tracking-page .tracking-panel-copy,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy {
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 3px;
+    min-width: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    padding: 3px 2px;
+    border: 0;
+    margin: 0;
+    background: #f2f2f2;
+}
+.pdf-project.tracking-page .tracking-panel-copy strong,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy strong {
+    display: block;
+    font-size: 10px;
+    line-height: 1.3;
+    text-align: center;
+    white-space: nowrap;
+}
+.pdf-project.tracking-page .tracking-panel-copy span,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel-copy span {
+    display: block;
+    font-size: 7px;
+    line-height: 1.3;
+    white-space: nowrap;
+    text-align: center;
+}
+.pdf-project.tracking-page .tracking-media,
+.pdf-project.tracking-page .tracking-distance-grid .tracking-media,
+.pdf-project.tracking-page.pdf-tracking-fallback .tracking-media {
+    grid-column: 2;
+    grid-row: 1;
+    display: block;
+    width: auto;
+    min-width: 0;
+    height: min(var(--pdf-tracking-image-height, 132px), 132px);
+    aspect-ratio: 4 / 3;
+    padding: 0;
+    margin: 0;
+    background: #f2f2f2;
+    overflow: hidden;
+}
+.pdf-project.tracking-page .tracking-distance-grid .tracking-media {
+    height: min(calc(var(--pdf-tracking-image-height, 145px) + 3px), 150px);
+}
+.pdf-project.tracking-page .tracking-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    padding: 0;
+    margin: 0;
+}
+
+/* 하단 거리 유지 카드 간격 */
+.pdf-project.tracking-page .tracking-distance-grid {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 3px 5px;
+}
+
+/* 하단 두 카드 크기와 라벨 너비 */
+.pdf-project.tracking-page .tracking-distance-grid .tracking-panel {
+    flex: none;
+    width: max-content;
+    grid-template-columns: 54px minmax(0, 1fr);
 }

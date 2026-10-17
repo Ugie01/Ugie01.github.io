@@ -6,20 +6,16 @@
   <title>이명욱_Robot_SW_Portfolio</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css?v=20261017images">
-  <link rel="stylesheet" href="print.css?v=20261017portrait">
-  <script src="print.js?v=20261017download" defer></script>
+  <link rel="stylesheet" href="print.css?v=20261017trackingleftv5">
+  <script src="print.js?v=20261017trackingleftv5" defer></script>
 </head>
 <body class="print-view">
   <header class="print-toolbar">
     <a href="index.html">← 포트폴리오</a>
     <p id="print-status" role="status">최신 포트폴리오를 불러오는 중입니다.</p>
-    <button id="save-pdf" type="button" onclick="window.print()">
-      PDF로 저장 ↓
-    </button>
+    <button id="save-pdf" type="button" onclick="window.print()" disabled>PDF로 저장 ↓</button>
   </header>
-  <p class="print-help">
-    PDF로 저장 버튼을 누른 후 인쇄 대상을 'PDF로 저장'으로 선택하세요.
-  </p>
+  <p class="print-help">화면 확인 후 PDF로 저장 버튼을 누르고 인쇄 대상에서 ‘PDF로 저장’을 선택해 주세요.</p>
   <main id="print-pages" aria-label="전체 포트폴리오 PDF 미리보기"></main>
   <noscript>최신 페이지를 불러오려면 브라우저의 JavaScript를 활성화해 주세요.</noscript>
 </body>

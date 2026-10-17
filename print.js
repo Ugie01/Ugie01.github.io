@@ -122,8 +122,46 @@
 
   function overflows(body) {
     const bounds = body.getBoundingClientRect();
-    return [...body.children]
+    return body.scrollHeight > body.clientHeight + 1 || [...body.children]
       .some(el => el.getBoundingClientRect().bottom > bounds.bottom + 1);
+  }
+
+  // Preserve exactly one A4 sheet per project. First reduce image frames,
+  // then tighten PDF-only spacing, and use the old two-column tracking
+  // comparison as a last resort. Never change the live web layout.
+  function fitProjectSheet(page) {
+    const body = page.querySelector('.pdf-body');
+    if (!overflows(body)) return;
+
+    const tracking = page.classList.contains('tracking-page');
+    const vip = !!page.querySelector('.vip-evidence-gallery');
+    const variable = tracking ? '--pdf-tracking-image-height' : '--pdf-image-height';
+    const initial = tracking ? 145 : (vip ? 218 : 182);
+    const minimum = tracking ? 94 : (vip ? 140 : 128);
+
+    // Tracking labels sit beside the images. Tighten whitespace
+    // before reducing image size to preserve image readability.
+    if (tracking) page.classList.add('pdf-density-compact');
+
+    for (let height = initial; height >= minimum && overflows(body); height -= 5) {
+      page.style.setProperty(variable, `${height}px`);
+    }
+    if (overflows(body)) page.classList.add('pdf-density-compact');
+
+    if (tracking && overflows(body)) {
+      // Still exactly one page: retain all five images in the old compact
+      // left/right card configuration rather than dropping a photo.
+      page.classList.add('pdf-tracking-fallback');
+      page.style.setProperty(variable, '88px');
+    }
+
+    // Keep the old safe minimum size when a long sentence wraps differently.
+    if (overflows(body)) {
+      const floor = tracking ? 72 : (vip ? 122 : 112);
+      for (let height = minimum; height >= floor && overflows(body); height -= 4) {
+        page.style.setProperty(variable, `${height}px`);
+      }
+    }
   }
 
   async function build() {
@@ -138,12 +176,15 @@
     await document.fonts.ready;
     await Promise.all([...pages.querySelectorAll('img')].map(img => img.decode()));
     const sheets = [...pages.querySelectorAll('.pdf-sheet')];
+    if (sheets.length !== 7) throw new Error(`예상 페이지는 7장인데 ${sheets.length}장이 생성되었습니다.`);
+    sheets.filter(page => page.classList.contains('pdf-project')).forEach(fitProjectSheet);
     for (const [index, page] of sheets.entries()) {
       const body = page.querySelector('.pdf-body');
       if (overflows(body)) throw new Error(`${page.querySelector('.pdf-running-head span').textContent}: 프로젝트 내용이 인쇄 영역을 넘습니다.`);
       page.querySelector('.pdf-page-number').textContent = `${String(index + 1).padStart(2, '0')} / ${String(sheets.length).padStart(2, '0')}`;
     }
     document.documentElement.dataset.pdfReady = 'true';
+    document.querySelector('#save-pdf').disabled = false;
     status.textContent = `세로 A4 / 총 ${sheets.length}페이지 / 웹 포트폴리오 요약본`;
   }
   build().catch(error => {
