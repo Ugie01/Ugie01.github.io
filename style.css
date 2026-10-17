@@ -1027,3 +1027,99 @@ body.detail-redesign .vip-evidence-gallery img {
         height: 300px;
     }
 }
+
+/* 모바일 시스템 흐름 화살표 중앙 정렬 */
+@media (max-width: 768px) {
+    .detail-flow li:not(:last-child)::after {
+        content: "↓";
+        position: absolute;
+        left: 50%;
+        right: auto;
+        top: auto;
+        bottom: -28px;
+        transform: translateX(-50%);
+        font-size: 20px;
+        line-height: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .detail-flow {
+        gap: 40px;
+    }
+
+    .detail-flow li {
+        position: relative;
+    }
+}
+
+/* PC: 가로 화살표 자동 중앙 정렬 */
+@media (min-width: 769px) {
+    .detail-flow {
+        --flow-gap: 36px;
+        gap: var(--flow-gap);
+    }
+
+    .detail-flow li:not(:last-child)::after {
+        content: "→";
+        left: calc(100% + var(--flow-gap) / 2);
+        right: auto;
+        top: 50%;
+        bottom: auto;
+        transform: translate(-50%, -50%);
+        translate: none;
+    }
+}
+
+/* 모바일: 세로 화살표 자동 중앙 정렬 */
+@media (max-width: 768px) {
+    .detail-flow {
+        --flow-gap: 40px;
+        gap: var(--flow-gap);
+    }
+
+    .detail-flow li {
+        position: relative;
+    }
+
+    .detail-flow li:not(:last-child)::after {
+        content: "↓";
+        top: calc(100% + var(--flow-gap) / 2);
+        bottom: auto;
+        left: 50%;
+        right: auto;
+        transform: translate(-50%, -50%);
+        translate: none;
+    }
+}
+
+/* PC 시스템 흐름 화살표 자동 중앙 정렬 */
+@media (min-width: 769px) {
+    .detail-flow {
+        --flow-gap: 36px;
+        gap: var(--flow-gap);
+    }
+
+    .detail-flow li {
+        position: relative;
+    }
+
+    .detail-flow li:not(:last-child)::after {
+        content: "→";
+        position: absolute;
+
+        /* 카드 오른쪽 경계에서 간격의 절반만큼 이동 */
+        left: calc(100% + var(--flow-gap) / 2);
+        right: auto;
+        top: 50%;
+        bottom: auto;
+
+        transform: translate(-50%, -50%);
+        translate: none;
+
+        font-size: 20px;
+        line-height: 1;
+        z-index: 1;
+        pointer-events: none;
+    }
+}
