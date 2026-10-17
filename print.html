@@ -13,9 +13,13 @@
   <header class="print-toolbar">
     <a href="index.html">← 포트폴리오</a>
     <p id="print-status" role="status">최신 포트폴리오를 불러오는 중입니다.</p>
-    <a id="save-pdf" href="assets/downloads/Lee_Myungwook_Robot_SW_Portfolio.pdf" download="Lee_Myungwook_Robot_SW_Portfolio.pdf">세로 PDF 다운로드</a>
+    <button id="save-pdf" type="button" onclick="window.print()">
+      PDF로 저장 ↓
+    </button>
   </header>
-  <p class="print-help">버튼을 누르면 A4 세로 PDF를 바로 내려받습니다. 브라우저에서 직접 인쇄할 때는 프린터 대신 ‘PDF로 저장’을 선택해 주세요.</p>
+  <p class="print-help">
+    PDF로 저장 버튼을 누른 후 인쇄 대상을 'PDF로 저장'으로 선택하세요.
+  </p>
   <main id="print-pages" aria-label="전체 포트폴리오 PDF 미리보기"></main>
   <noscript>최신 페이지를 불러오려면 브라우저의 JavaScript를 활성화해 주세요.</noscript>
 </body>
