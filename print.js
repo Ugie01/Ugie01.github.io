@@ -1,8 +1,7 @@
-/* PDF pages reuse the website's complete project sections and image layouts. */
+/* Build one concise print sheet per project from the live detail pages. */
 (() => {
   const pages = document.querySelector('#print-pages');
   const status = document.querySelector('#print-status');
-  const save = document.querySelector('#save-pdf');
   if (location.protocol === 'file:') {
     location.replace('http://127.0.0.1:4173/print.html');
     return;
@@ -86,7 +85,7 @@
 
   function project({doc, href}) {
     const title = text(doc, 'h1');
-    const body = sheet(title, `pdf-project detail-redesign detail-compact${new URL(href).pathname.endsWith('/fms.html') ? ' pdf-project-ax' : ''}${doc.body.classList.contains('tracking-page') ? ' tracking-page' : ''}`);
+    const body = sheet(title, `pdf-project detail-redesign detail-compact${doc.body.classList.contains('tracking-page') ? ' tracking-page' : ''}`);
     body.dataset.source = href;
     const heading = node('header', 'pdf-project-heading');
     const titleRow = node('div', 'pdf-title-row');
@@ -105,11 +104,20 @@
     doc.querySelectorAll('.detail-actions a').forEach(link => links.append(copy(link, '')));
     heading.append(links);
 
-    // Clone whole sections, including every bullet, caption and problem-solving step.
-    // The main-page cover is intentionally not part of a project detail sheet.
+    // Keep the website's facts and section order, but show fewer details in print.
+    // The full description remains available through the project link above.
     body.append(heading, copy(doc.querySelector('.detail-keyline')));
-    doc.querySelectorAll('.project-detail > .detail-section, .project-detail > .limitations-card')
-      .forEach(section => body.append(copy(section)));
+    doc.querySelectorAll('.project-detail > .detail-section, .project-detail > .limitations-card').forEach(source => {
+      const section = copy(source);
+      section.querySelectorAll('.contribution-card ul').forEach(list => {
+        [...list.children].slice(2).forEach(item => item.remove());
+      });
+      section.querySelectorAll('.detail-evidence-gallery figcaption p, .detail-flow li p').forEach(detail => detail.remove());
+      if (doc.body.classList.contains('tracking-page')) {
+        section.querySelectorAll('.tracking-distance-grid .tracking-panel-copy span').forEach(detail => detail.remove());
+      }
+      body.append(section);
+    });
   }
 
   function overflows(body) {
@@ -129,27 +137,6 @@
     projects.forEach(project);
     await document.fonts.ready;
     await Promise.all([...pages.querySelectorAll('img')].map(img => img.decode()));
-    // Preserve every section if future website copy grows: continue on another sheet.
-    for (const page of [...pages.querySelectorAll('.pdf-project')]) {
-      let current = page;
-      while (overflows(current.querySelector('.pdf-body'))) {
-        const body = current.querySelector('.pdf-body');
-        const sections = [...body.children].filter(el => el.matches('.detail-section, .limitations-card'));
-        if (sections.length < 2) throw new Error(`${text(page, '.pdf-running-head span')}: 인쇄 영역을 확인해 주세요.`);
-        const nextBody = sheet(text(page, '.pdf-running-head span'), page.className.replace('pdf-sheet ', ''));
-        nextBody.dataset.source = body.dataset.source;
-        nextBody.append(node('h1', 'pdf-continuation-title', text(page, '.pdf-title-row h1') || text(page, '.pdf-running-head span')));
-        const moved = [];
-        while (overflows(body) && sections.length > 1) {
-          const section = sections.pop();
-          section.remove();
-          moved.unshift(section);
-        }
-        nextBody.append(...moved);
-        current.after(nextBody.closest('.pdf-sheet'));
-        current = nextBody.closest('.pdf-sheet');
-      }
-    }
     const sheets = [...pages.querySelectorAll('.pdf-sheet')];
     for (const [index, page] of sheets.entries()) {
       const body = page.querySelector('.pdf-body');
@@ -157,9 +144,7 @@
       page.querySelector('.pdf-page-number').textContent = `${String(index + 1).padStart(2, '0')} / ${String(sheets.length).padStart(2, '0')}`;
     }
     document.documentElement.dataset.pdfReady = 'true';
-    status.textContent = `세로 A4 / 총 ${sheets.length}페이지 / 웹 포트폴리오 내용 전체 반영`;
-    save.disabled = false;
-    save.addEventListener('click', () => window.print());
+    status.textContent = `세로 A4 / 총 ${sheets.length}페이지 / 웹 포트폴리오 요약본`;
   }
   build().catch(error => {
     pages.replaceChildren();

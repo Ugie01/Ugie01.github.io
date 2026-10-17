@@ -1,16 +1,11 @@
-/* A4 portrait throughout, including browsers that ignore named-page rules. */
-@page{size:A4 portrait;margin:0}
-@page profile{size:A4 portrait;margin:0}
-@page project{size:A4 portrait;margin:0}
-.pdf-profile{page:profile}
-.pdf-project{page:project}
+/* A single page rule prevents print dialogs from mixing page orientations. */
+@page{size:210mm 297mm;margin:0}
 .print-view{background:#e9e9e9;font-size:14px;line-height:1.65}
 .print-toolbar{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:14px 24px;background:#111;color:#fff}
 .print-toolbar p{color:#eee;font-size:13px}
-.print-toolbar button{background:#fff;color:#111;border:0;padding:9px 20px;font-weight:700}
-.print-toolbar button:disabled{opacity:.5;cursor:wait}
+.print-toolbar #save-pdf{background:#fff;color:#111;border:0;padding:9px 20px;font-weight:700;white-space:nowrap;text-decoration:none}
 .print-help{text-align:center;padding:14px 20px;font-size:13px}
-.pdf-sheet{width:297mm;height:210mm;padding:8mm 11mm 6mm;margin:20px auto;background:#fff;box-shadow:0 3px 20px #0001;display:flex;flex-direction:column}
+.pdf-sheet{width:210mm;height:297mm;padding:9mm 12mm 7mm;margin:20px auto;background:#fff;box-shadow:0 3px 20px #0001;display:flex;flex-direction:column}
 .pdf-running-head{height:8mm;flex:none;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid #171717;font-size:10px;letter-spacing:.07em;color:#777}
 .pdf-running-head strong{color:#111}
 .pdf-body{flex:1;min-height:0;padding:16px 0 15px;display:flex;flex-direction:column;gap:18px}
@@ -112,19 +107,19 @@
 .pdf-project .detail-evidence-gallery figcaption span{font-size:8px;line-height:1.3;margin:0 0 3px}
 .pdf-project .detail-evidence-gallery figcaption strong{font-size:12px;line-height:1.4}
 .pdf-project .detail-evidence-gallery figcaption p{font-size:10px;line-height:1.45;margin:3px 0 0}
-/* Keep all tracking panels and the same deliberate crops as the website. */
-.pdf-project .tracking-figure{margin:0;border:1px solid #ddd}
-.pdf-project .tracking-figure-head{padding:7px 9px;min-height:0}
+/* Tracking comparison cards use the same image, label and caption heights. */
+.pdf-project .tracking-figure{display:flex;flex-direction:column;margin:0;border:1px solid #ddd}
+.pdf-project .tracking-figure-head{display:grid;gap:2px;height:44px;min-height:44px;padding:6px 9px}
 .pdf-project .tracking-figure-head span{font-size:8px}
 .pdf-project .tracking-figure-head strong{font-size:12px}
-.pdf-project .tracking-visual-grid{gap:6px;padding:6px}
+.pdf-project .tracking-visual-grid{gap:4px;padding:4px;flex:none}
 .pdf-project .tracking-status-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
 .pdf-project .tracking-distance-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-.pdf-project .tracking-media{aspect-ratio:4/3}
-.pdf-project .tracking-panel-copy{display:block;padding:5px 6px;min-height:0}
-.pdf-project .tracking-panel-copy strong{display:block;font-size:10px;margin:0 0 2px}
-.pdf-project .tracking-panel-copy span,.pdf-project .tracking-distance-grid .tracking-panel-copy span{font-size:8.5px;line-height:1.4}
-.pdf-project .tracking-figure>figcaption{padding:5px 9px;font-size:9px;line-height:1.4;color:#666}
+.pdf-project .tracking-media{height:83px;aspect-ratio:auto}
+.pdf-project .tracking-panel-copy,.pdf-project .tracking-distance-grid .tracking-panel-copy{display:flex;align-items:center;justify-content:space-between;gap:2px;height:30px;min-height:30px;padding:3px 5px}
+.pdf-project .tracking-panel-copy strong{display:block;font-size:9px;margin:0}
+.pdf-project .tracking-panel-copy span,.pdf-project .tracking-distance-grid .tracking-panel-copy span{font-size:7px;line-height:1.3;white-space:nowrap}
+.pdf-project .tracking-figure>figcaption{flex:none;height:30px;min-height:30px;padding:5px 9px;font-size:9px;line-height:1.4;color:#666}
 /* Portrait project pages follow the website's full section order. */
 .pdf-project{width:210mm;height:297mm;padding:9mm 12mm 7mm}
 .pdf-project .pdf-body{gap:9px;padding:8px 0}
@@ -152,21 +147,9 @@
 .pdf-project .problem-steps p{font-size:11.5px;line-height:1.5}
 .pdf-project .limitations-card p{font-size:11px;line-height:1.5}
 .pdf-project .pdf-continuation-title{font-size:26px;margin:0 0 4px}
-.pdf-project .tracking-visual-grid{gap:3px;padding:4px}
-.pdf-project .tracking-panel-copy{padding:4px}
-.pdf-project .tracking-panel-copy span,.pdf-project .tracking-distance-grid .tracking-panel-copy span{font-size:8px;line-height:1.4}
-.pdf-project.tracking-page .detail-gallery{grid-template-columns:repeat(2,minmax(0,1fr));align-items:center}
-.pdf-project .tracking-figure{align-self:center;border-radius:0;background:#fff}
-.pdf-project .tracking-figure>figcaption{flex:none;background:#fff}
-.pdf-project .tracking-status-grid .tracking-panel-copy{display:flex;align-items:baseline;justify-content:space-between;gap:3px}
-.pdf-project .tracking-status-grid .tracking-panel-copy strong{margin:0}
-.pdf-project .tracking-status-grid .tracking-panel-copy span{font-size:7.5px;white-space:nowrap}
-/* Keep the updated AX summary on one portrait sheet without shrinking its text. */
-.pdf-project.pdf-project-ax .pdf-body{gap:6px}
-.pdf-project.pdf-project-ax .detail-section{padding-top:5px}
-.pdf-project.pdf-project-ax .detail-evidence-gallery img{height:116px}
-.pdf-project.pdf-project-ax .detail-evidence-gallery figcaption{padding:5px 8px}
-.pdf-project.pdf-project-ax .contribution-card ul{line-height:1.4}
+.pdf-project.tracking-page .detail-gallery{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+.pdf-project .tracking-figure{align-self:stretch;border-radius:0;background:#fff}
+.pdf-project .tracking-figure>figcaption{background:#fff}
 /* Profile: large portrait with an editorial text column, matching the website. */
 .pdf-profile .pdf-body{gap:40px;padding-top:24px}
 .pdf-profile-hero{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:65px;align-items:start}

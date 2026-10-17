@@ -2,5 +2,6 @@ __pycache__/
 node_modules/
 .local-preview/
 output/pdf/
+assets/portfolio-images/cropped_output/
 .DS_Store
 Thumbs.db
