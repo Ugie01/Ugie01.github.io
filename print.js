@@ -123,7 +123,7 @@
 
     const links = node('div', 'pdf-project-links');
     const web = node('a', '', '프로젝트 상세 ↗');
-    web.href = new URL(new URL(href).pathname, 'https://ugie01.github.io').href;
+    web.href = new URL(new URL(href).pathname.replace(/^\/preview\//, '/'), 'https://ugie01.github.io').href;
     links.append(web);
     doc.querySelectorAll('.detail-actions a').forEach(link => links.append(copy(link, '')));
     heading.append(links);
@@ -146,8 +146,11 @@
 
   function overflows(body) {
     const bounds = body.getBoundingClientRect();
-    return body.scrollHeight > body.clientHeight + 1 || [...body.children]
-      .some(el => el.getBoundingClientRect().bottom > bounds.bottom + 1);
+    return body.scrollHeight > body.clientHeight + 1 || body.scrollWidth > body.clientWidth + 1 || [...body.children]
+      .some(el => {
+        const child = el.getBoundingClientRect();
+        return child.bottom > bounds.bottom + 1 || child.right > bounds.right + 1;
+      });
   }
 
   // Preserve exactly one A4 sheet per project. First reduce image frames,

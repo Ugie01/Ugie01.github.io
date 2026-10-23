@@ -85,7 +85,8 @@
       url.searchParams.set('v', Date.now().toString());
       const response = await fetch(url, { cache: 'no-store' });
       if (!response.ok) throw new Error(`설정 파일 응답 ${response.status}`);
-      const config = previewConfig || await response.json();
+      const saved = await response.json();
+      const config = previewConfig || saved;
       applyTheme(config.theme);
       applyProjectSettings(config);
       document.documentElement.dataset.siteConfig = 'ready';
