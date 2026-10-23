@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "theme": {
+    "name": "mono",
+    "background": "#ffffff",
+    "surface": "#f3f3f3",
+    "text": "#171717",
+    "muted": "#666666",
+    "accent": "#111111",
+    "line": "#d8d8d8",
+    "dark": "#111111"
+  },
+  "projects": [
+    {
+      "id": "fms",
+      "name": "AX Multi-Robot Logistics",
+      "path": "projects/fms.html",
+      "visible": true,
+      "includeInPdf": true,
+      "order": 1,
+      "featured": true
+    },
+    {
+      "id": "gosung",
+      "name": "GoSung",
+      "path": "projects/gosung.html",
+      "visible": true,
+      "includeInPdf": true,
+      "order": 2,
+      "featured": false
+    },
+    {
+      "id": "aiming",
+      "name": "AIMing Project",
+      "path": "projects/aiming.html",
+      "visible": true,
+      "includeInPdf": true,
+      "order": 3,
+      "featured": false
+    },
+    {
+      "id": "tracking",
+      "name": "Tracking Patrol Robot",
+      "path": "projects/tracking.html",
+      "visible": true,
+      "includeInPdf": true,
+      "order": 4,
+      "featured": false
+    },
+    {
+      "id": "vip",
+      "name": "VIP Wearable",
+      "path": "projects/vip.html",
+      "visible": false,
+      "includeInPdf": false,
+      "order": 5,
+      "featured": false
+    },
+    {
+      "id": "plc",
+      "name": "MPS 창고 적재 제어",
+      "path": "projects/plc.html",
+      "visible": false,
+      "includeInPdf": false,
+      "order": 6,
+      "featured": false
+    }
+  ]
+}

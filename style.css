@@ -1,9 +1,30 @@
 @charset "UTF-8";
-:root{--navy:#111;--ink:#171717;--muted:#666;--blue:#111;--line:#d8d8d8;--paper:#f3f3f3;--signal:#111;--cream:#fff;--mono:Pretendard,"Noto Sans KR","Malgun Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+:root{--navy:#111;--ink:#171717;--muted:#666;--blue:#111;--line:#d8d8d8;--paper:#f3f3f3;--signal:#111;--cream:#fff;--site-bg:#fff;--header-bg:#fff;--mono:Pretendard,"Noto Sans KR","Malgun Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+
+/* Optional palettes only change colors. Mono and PDF keep their original styling. */
+html[data-site-theme]:not([data-site-theme="mono"]) body:not(.print-view){background:var(--site-bg);color:var(--ink)}
+html[data-site-theme]:not([data-site-theme="mono"]) body:not(.print-view) :is(.site-header,.menu-toggle,.nav-links){background:var(--site-bg);border-color:var(--line)}
+html[data-site-theme]:not([data-site-theme="mono"]) body.home-page :is(.hero,.project-card){background:var(--site-bg);color:var(--ink);border-color:var(--line)}
+html[data-site-theme]:not([data-site-theme="mono"]) body.home-page :is(.brand-mark,.hero h1,.hero-name-en,.hero-position,.profile-facts dd,.about-section h2,.education h3){color:var(--navy)}
+html[data-site-theme]:not([data-site-theme="mono"]) body.home-page :is(.hero-description,.about-copy,.card-summary){color:var(--muted)}
+html[data-site-theme]:not([data-site-theme="mono"]) body.home-page :is(.eyebrow,.card-index,.card-role>span,.education-date){color:var(--blue)}
+html[data-site-theme]:not([data-site-theme="mono"]) body.home-page :is(.hero-profile,.profile-facts,.about-section){background:var(--paper);border-color:var(--line)}
+html[data-site-theme]:not([data-site-theme="mono"]) body.home-page :is(.profile-facts>div,.section-head,.projects-toolbar,.education article){border-color:var(--line)}
+html[data-site-theme]:not([data-site-theme="mono"]) body.home-page :is(#skills,.featured,.featured-content,.contact-section,.site-footer){background:var(--navy);border-color:var(--navy)}
+html[data-site-theme]:not([data-site-theme="mono"]) body.home-page :is(#skills .eyebrow,#skills .skills-language,.skill-no,.skill-context,.feature-scope p,.featured-role,.featured-content>p:not(.feature-top):not(.featured-role),.contact-section p,.contact-links>span,.footer-inner,.footer-inner p,.footer-inner a){color:#c6cdd0}
+html[data-site-theme]:not([data-site-theme="mono"]) body.home-page :is(.skill-group,.skill-grid,.skill-context,#skills .section-head,.feature-scope){border-color:#ffffff40}
+html[data-site-theme]:not([data-site-theme="mono"]) body.home-page .tags li{background:var(--paper);border-color:var(--line);color:var(--ink)}
+html[data-site-theme]:not([data-site-theme="mono"]) body.home-page .featured .tags li{background:transparent;border-color:#ffffff40;color:#eef1f3}
+html[data-site-theme]:not([data-site-theme="mono"]) body:not(.print-view) :is(.button-primary,.header-pdf){background:var(--blue);border-color:var(--blue);color:#fff}
+html[data-site-theme]:not([data-site-theme="mono"]) body:not(.print-view) :is(.button-primary,.header-pdf):hover{background:var(--navy);border-color:var(--navy);color:#fff}
+html[data-site-theme]:not([data-site-theme="mono"]) body:not(.print-view) :is(.button-secondary,.button-light){background:var(--site-bg);border-color:var(--line);color:var(--navy)}
+html[data-site-theme]:not([data-site-theme="mono"]) body.home-page .card-more{color:var(--blue);border-color:var(--line)}
+html[data-site-theme]:not([data-site-theme="mono"]) body.home-page .card-role{border-left-color:var(--blue)}
+html[data-site-theme]:not([data-site-theme="mono"]) body.detail-redesign :is(.detail-evidence-gallery figcaption,.tracking-figure-head,.tracking-panel,.detail-flow li,.problem-card){background:var(--site-bg);border-color:var(--line)}
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:95px}
-body{margin:0;color:var(--ink);font-family:Pretendard,"Noto Sans KR","Malgun Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.75;word-break:keep-all;overflow-wrap:anywhere;background:#fff}
+body{margin:0;color:var(--ink);font-family:Pretendard,"Noto Sans KR","Malgun Gothic",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1.75;word-break:keep-all;overflow-wrap:anywhere;background:var(--site-bg)}
 img,svg,video{max-width:100%;height:auto}
 img{display:block}
 a{color:inherit;text-decoration:none}
@@ -22,7 +43,7 @@ p{color:var(--muted)}
 .skip-link{position:fixed;left:15px;top:-70px;padding:12px 20px;background:var(--navy);color:#fff;z-index:100}
 .skip-link:focus{top:10px}
 
-.site-header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line)}
+.site-header{position:sticky;top:0;z-index:20;background:var(--header-bg);border-bottom:1px solid var(--line)}
 .nav{min-height:80px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .brand{display:flex;align-items:center;gap:18px;min-height:44px}
 .brand-mark{font-weight:850;font-size:27px;letter-spacing:-2px;color:var(--navy)}
@@ -101,7 +122,7 @@ p{color:var(--muted)}
 .filters button:hover{background:#eee3d6;color:var(--navy)}
 .filters button[aria-pressed=true]:hover{background:#46362f;color:#fff}
 .project-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px}
-.project-card{border:1px solid var(--line);border-radius:12px;overflow:hidden;min-width:0;background:#fff;transition:border-color .15s}
+.project-card{border:1px solid var(--line);border-radius:12px;overflow:hidden;min-width:0;background:var(--cream);transition:border-color .15s}
 .project-card:hover{border-color:#b87a57}
 .project-image{display:block;aspect-ratio:1.87;background:#eee4d9;position:relative;overflow:hidden;padding:16px}
 .project-image img{width:100%;height:100%;object-fit:contain;transition:transform .2s}

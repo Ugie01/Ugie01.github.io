@@ -21,6 +21,30 @@
   };
   const text = (doc, selector) => doc.querySelector(selector)?.textContent.trim() || '';
 
+  async function readConfig() {
+    const url = new URL('content/site-config.json', root);
+    url.searchParams.set('pdf-revision', revision);
+    const response = await fetch(url, { cache: 'no-store' });
+    if (!response.ok) throw new Error('포트폴리오 설정을 불러오지 못했습니다.');
+    return response.json();
+  }
+
+  function applyTheme(theme = {}) {
+    const values = {
+      '--site-bg': theme.background,
+      '--cream': theme.background,
+      '--paper': theme.surface,
+      '--ink': theme.text,
+      '--muted': theme.muted,
+      '--blue': theme.accent,
+      '--line': theme.line,
+      '--navy': theme.dark
+    };
+    Object.entries(values).forEach(([name, value]) => {
+      if (/^#[0-9a-f]{6}$/i.test(value || '')) document.documentElement.style.setProperty(name, value);
+    });
+  }
+
   async function readPage(url) {
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) throw new Error(`페이지를 불러오지 못했습니다: ${url.pathname}`);
@@ -165,18 +189,32 @@
   }
 
   async function build() {
-    const home = await readPage(new URL('index.html', root));
-    const cards = [...home.querySelectorAll('.featured, .project-card')];
-    const projects = await Promise.all(cards.map(async card => {
+    const [home, config] = await Promise.all([
+      readPage(new URL('index.html', root)),
+      readConfig()
+    ]);
+    applyTheme(config.theme);
+    const cardsById = new Map([...home.querySelectorAll('.featured, .project-card')].map(card => {
       const href = card.querySelector('a[href*="projects/"]').href;
-      return {card, doc: await readPage(new URL(href)), href};
+      const id = new URL(href).pathname.split('/').pop().replace(/\.html$/, '');
+      return [id, { card, href }];
     }));
+    const selected = (config.projects || [])
+      .filter(item => item.includeInPdf !== false && cardsById.has(item.id))
+      .sort((a, b) => a.order - b.order)
+      .map(item => cardsById.get(item.id));
+    const projects = await Promise.all(selected.map(async item => ({
+      card: item.card,
+      doc: await readPage(new URL(item.href)),
+      href: item.href
+    })));
     profile(home);
     projects.forEach(project);
     await document.fonts.ready;
     await Promise.all([...pages.querySelectorAll('img')].map(img => img.decode()));
     const sheets = [...pages.querySelectorAll('.pdf-sheet')];
-    if (sheets.length !== 7) throw new Error(`예상 페이지는 7장인데 ${sheets.length}장이 생성되었습니다.`);
+    const expectedSheets = projects.length + 1;
+    if (sheets.length !== expectedSheets) throw new Error(`예상 페이지는 ${expectedSheets}장인데 ${sheets.length}장이 생성되었습니다.`);
     sheets.filter(page => page.classList.contains('pdf-project')).forEach(fitProjectSheet);
     for (const [index, page] of sheets.entries()) {
       const body = page.querySelector('.pdf-body');
