@@ -1,14 +1,14 @@
 {
   "version": 1,
   "theme": {
-    "name": "mono",
-    "background": "#ffffff",
-    "surface": "#f3f3f3",
-    "text": "#171717",
-    "muted": "#666666",
-    "accent": "#111111",
-    "line": "#d8d8d8",
-    "dark": "#111111"
+    "name": "spring",
+    "background": "#fcfcf7",
+    "surface": "#f0f4eb",
+    "text": "#28332b",
+    "muted": "#606b60",
+    "accent": "#526e49",
+    "line": "#d9dfd3",
+    "dark": "#26392f"
   },
   "projects": [
     {
