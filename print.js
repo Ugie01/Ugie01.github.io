@@ -8,6 +8,7 @@
   }
   const root = new URL('./', location.href);
   const revision = Date.now().toString();
+  let profileName = '', profilePosition = '';
   const node = (tag, cls, text) => {
     const el = document.createElement(tag);
     el.className = cls;
@@ -70,7 +71,7 @@
     head.append(node('strong', '', 'Ugie / PORTFOLIO'), node('span', '', title));
     const body = node('div', 'pdf-body');
     const footer = node('footer', 'pdf-footer');
-    footer.append(node('span', '', '이명욱 / Robot Software Engineer'), node('span', 'pdf-page-number'));
+    footer.append(node('span', '', `${profileName} / ${profilePosition}`), node('span', 'pdf-page-number'));
     page.append(head, body, footer);
     pages.append(page);
     return body;
@@ -93,7 +94,8 @@
     const facts = copy(home.querySelector('.profile-facts'), 'pdf-facts');
     const portrait = node('figure', 'pdf-portrait');
     portrait.append(copy(home.querySelector('.hero-portrait img')));
-    const github = node('a', 'pdf-profile-link', 'GitHub / Ugie01 ↗');
+    const githubLabel = text(home, '.contact-links a').replace(/\s*↗\s*$/, '').replace(' - ', ' / ');
+    const github = node('a', 'pdf-profile-link', githubLabel + ' ↗');
     github.href = home.querySelector('.nav-github').href;
     portrait.append(github);
     hero.append(intro, portrait);
@@ -197,6 +199,8 @@
       readConfig()
     ]);
     applyTheme(config.theme);
+    profileName = text(home, '.hero h1');
+    profilePosition = text(home, '.hero-position');
     const cardsById = new Map([...home.querySelectorAll('.featured, .project-card')].map(card => {
       const href = card.querySelector('a[href*="projects/"]').href;
       const id = new URL(href).pathname.split('/').pop().replace(/\.html$/, '');

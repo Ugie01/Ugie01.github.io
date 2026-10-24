@@ -64,6 +64,15 @@
       "includeInPdf": false,
       "order": 6,
       "featured": false
+    },
+    {
+      "id": "test-1",
+      "name": "테스트",
+      "path": "projects/test-1.html",
+      "visible": false,
+      "includeInPdf": false,
+      "order": 7,
+      "featured": false
     }
   ]
 }
