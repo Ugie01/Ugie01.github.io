@@ -3,6 +3,7 @@
   const isDetailPage = location.pathname.includes('/projects/');
   const siteRoot = new URL(isDetailPage ? '../' : './', location.href);
   let previewConfig = null;
+  document.querySelectorAll('.project-pagination a:not(:first-child)').forEach(link => link.remove());
   const projectIdFromElement = element => {
     const link = element?.querySelector('a[href*="projects/"]');
     if (!link) return '';
@@ -44,7 +45,39 @@
     return count;
   }
 
+  // Use the same published project settings for detail-page navigation.
+  function applyProjectNavigation(config) {
+    const navigation = document.querySelector('.project-pagination');
+    if (!isDetailPage || !navigation) return;
+    navigation.querySelectorAll('[data-project-next]').forEach(link => link.remove());
+    const currentId = location.pathname.split('/').pop().replace(/\.html$/, '');
+    const seen = new Set();
+    const visible = (config.projects || []).map((project, index) => ({ ...project, index }))
+      .filter(project => {
+        if (project.visible === false || typeof project.path !== 'string' || !project.id || seen.has(project.id)) return false;
+        const url = new URL(project.path, siteRoot);
+        if (url.origin !== siteRoot.origin || !url.pathname.startsWith(siteRoot.pathname + 'projects/') || !url.pathname.endsWith('.html')) return false;
+        project.url = url;
+        seen.add(project.id);
+        return true;
+      })
+      .sort((a, b) => Number(!!b.featured) - Number(!!a.featured)
+        || (Number.isFinite(a.order) ? a.order : 999) - (Number.isFinite(b.order) ? b.order : 999)
+        || a.index - b.index);
+    const current = visible.findIndex(project => project.id === currentId);
+    if (current >= 0 && visible.length > 1) {
+      const next = visible[(current + 1) % visible.length];
+      const link = document.createElement('a');
+      link.dataset.projectNext = next.id;
+      link.href = next.url.href;
+      link.textContent = `다음 프로젝트: ${next.name || next.id} →`;
+      navigation.append(link);
+    }
+    navigation.dataset.navigationReady = 'true';
+  }
+
   function applyProjectSettings(config) {
+    applyProjectNavigation(config);
     if (!document.body.classList.contains('home-page')) return;
     const settings = new Map((config.projects || []).map(item => [item.id, item]));
     const featured = document.querySelector('.featured');

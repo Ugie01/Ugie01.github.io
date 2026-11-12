@@ -1,4 +1,4 @@
-/* Build one concise print sheet per project from the live detail pages. */
+/* Build the configured one or two portrait print sheets from each live project. */
 (() => {
   const pages = document.querySelector('#print-pages');
   const status = document.querySelector('#print-status');
@@ -79,6 +79,7 @@
 
   function profile(home) {
     const body = sheet('PROFILE / SKILLS', 'pdf-profile');
+    body.parentElement.dataset.typography = home.body.dataset.typography || '{}';
     const hero = node('div', 'pdf-profile-hero');
     const intro = node('section', 'pdf-intro-copy');
     const description = node('div', 'pdf-description');
@@ -111,40 +112,56 @@
 
   function project({doc, href}) {
     const title = text(doc, 'h1');
-    const body = sheet(title, `pdf-project detail-redesign detail-compact${doc.body.classList.contains('tracking-page') ? ' tracking-page' : ''}`);
-    body.dataset.source = href;
-    const heading = node('header', 'pdf-project-heading');
-    const titleRow = node('div', 'pdf-title-row');
-    titleRow.append(node('h1', '', title), node('span', 'pdf-status', text(doc, '.status')));
-    const meta = copy(doc.querySelector('.detail-meta'), 'pdf-meta');
-    const tags = copy(doc.querySelector('.tags'), 'pdf-tags');
-    const metadata = node('div', 'pdf-metadata');
-    metadata.append(meta, tags);
-    heading.append(node('p', 'pdf-kicker', text(doc, '.detail-hero .eyebrow') || text(doc, '.detail-header .eyebrow')), titleRow,
-      node('p', 'pdf-project-summary', text(doc, '.detail-summary')), metadata);
-
-    const links = node('div', 'pdf-project-links');
-    const web = node('a', '', '프로젝트 상세 ↗');
-    web.href = new URL(new URL(href).pathname.replace(/^\/preview\//, '/'), 'https://ugie01.github.io').href;
-    links.append(web);
-    doc.querySelectorAll('.detail-actions a').forEach(link => links.append(copy(link, '')));
-    heading.append(links);
-
-    // Keep the website's facts and section order, but show fewer details in print.
-    // The full description remains available through the project link above.
-    body.append(heading, copy(doc.querySelector('.detail-keyline')));
-    doc.querySelectorAll('.project-detail > .detail-section, .project-detail > .limitations-card').forEach(source => {
-      const section = copy(source);
-      section.querySelectorAll('.contribution-card ul').forEach(list => {
-        [...list.children].slice(2).forEach(item => item.remove());
-      });
-      section.querySelectorAll('.detail-evidence-gallery figcaption p').forEach(detail => detail.remove());
-      if (doc.body.classList.contains('tracking-page')) {
-        section.querySelectorAll('.tracking-distance-grid .tracking-panel-copy span').forEach(detail => detail.remove());
+    const sourceRoot = doc.querySelector('.project-detail');
+    sourceRoot.querySelectorAll('img').forEach((n,i)=>n.dataset.typoImageIndex=String(i));
+    sourceRoot.querySelectorAll('.editable-detail-section').forEach((n,i)=>n.dataset.typoExtraIndex=String(i));
+    const count = Number(sourceRoot.dataset.pdfPages || 1);
+    if (![1, 2].includes(count)) throw new Error(`${title}: PDF 분량은 1~2페이지로 설정해 주세요.`);
+    const sections = [...doc.querySelectorAll('.project-detail > .detail-section, .project-detail > .limitations-card')];
+    const boundary = sourceRoot.dataset.pdfBreakBefore;
+    const split = count === 2 ? sections.findIndex(section => section.getAttribute('aria-labelledby') === boundary) : sections.length;
+    if (count === 2 && (split <= 0 || split >= sections.length)) throw new Error(`${title}: 두 번째 페이지의 시작 항목을 선택해 주세요.`);
+    const chunks = count === 2 ? [sections.slice(0, split), sections.slice(split)] : [sections];
+    if (count === 2 && sourceRoot.dataset.pdfProblemFirst === 'true') {
+      const problemIndex = chunks[1].findIndex(section => section.classList.contains('problem-section'));
+      if (problemIndex >= 0) chunks[0].push(...chunks[1].splice(problemIndex, 1));
+    }
+    chunks.forEach((chunk, index) => {
+      const body = sheet(count === 2 ? `${title} (${index + 1}/${count})` : title, `pdf-project detail-redesign detail-compact${doc.body.classList.contains('tracking-page') ? ' tracking-page' : ''}`);
+      body.dataset.source = href;
+      body.parentElement.dataset.typography = sourceRoot.dataset.typography || '{}';
+      body.parentElement.dataset.projectId = new URL(href).pathname.split('/').pop().replace(/\.html$/, '');
+      body.parentElement.dataset.projectPages = String(count);
+      body.parentElement.dataset.projectPart = String(index + 1);
+      const heading = node('header', 'pdf-project-heading');
+      const kicker = text(doc, '.detail-hero .eyebrow') || text(doc, '.detail-header .eyebrow');
+      if (index === 0) {
+        const titleRow = node('div', 'pdf-title-row');
+        titleRow.append(node('h1', '', title), node('span', 'pdf-status', text(doc, '.status')));
+        const metadata = node('div', 'pdf-metadata');
+        metadata.append(copy(doc.querySelector('.detail-meta'), 'pdf-meta'), copy(doc.querySelector('.tags'), 'pdf-tags'));
+        heading.append(node('p', 'pdf-kicker', kicker), titleRow, node('p', 'pdf-project-summary', text(doc, '.detail-summary')), metadata);
+      } else {
+        heading.append(node('p', 'pdf-kicker', `${kicker} / CONTINUED`), node('h1', 'pdf-continuation-title', title));
       }
-      body.append(section);
+      const links = node('div', 'pdf-project-links');
+      const web = node('a', '', '프로젝트 상세 ↗');
+      web.href = new URL(new URL(href).pathname.replace(/^\/preview\//, '/'), 'https://ugie01.github.io').href;
+      links.append(web);
+      doc.querySelectorAll('.detail-actions a').forEach(link => links.append(copy(link, '')));
+      heading.append(links);
+      body.append(heading);
+      if (index === 0) body.append(copy(doc.querySelector('.detail-keyline')));
+      chunk.forEach(source => {
+        const section = copy(source);
+        if (count === 1) section.querySelectorAll('.contribution-card ul').forEach(list => [...list.children].slice(2).forEach(item => item.remove()));
+        section.querySelectorAll('.detail-evidence-gallery figcaption p').forEach(detail => detail.remove());
+        if (doc.body.classList.contains('tracking-page')) section.querySelectorAll('.tracking-distance-grid .tracking-panel-copy span').forEach(detail => detail.remove());
+        body.append(section);
+      });
     });
   }
+
 
   function overflows(body) {
     const bounds = body.getBoundingClientRect();
@@ -155,7 +172,7 @@
       });
   }
 
-  // Preserve exactly one A4 sheet per project. First reduce image frames,
+  // Preserve each configured A4 sheet without clipping content. First reduce image frames,
   // then tighten PDF-only spacing, and use the old two-column tracking
   // comparison as a last resort. Never change the live web layout.
   function fitProjectSheet(page) {
@@ -217,10 +234,11 @@
     })));
     profile(home);
     projects.forEach(project);
+    window.PortfolioTypography?.apply();
     await document.fonts.ready;
     await Promise.all([...pages.querySelectorAll('img')].map(img => img.decode()));
     const sheets = [...pages.querySelectorAll('.pdf-sheet')];
-    const expectedSheets = projects.length + 1;
+    const expectedSheets = projects.reduce((sum, item) => sum + Number(item.doc.querySelector('.project-detail').dataset.pdfPages || 1), 1);
     if (sheets.length !== expectedSheets) throw new Error(`예상 페이지는 ${expectedSheets}장인데 ${sheets.length}장이 생성되었습니다.`);
     sheets.filter(page => page.classList.contains('pdf-project')).forEach(fitProjectSheet);
     for (const [index, page] of sheets.entries()) {
